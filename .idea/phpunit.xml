@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="$PROJECT_DIR$/vendor1/dragonmantank/cron-expression/tests" />
+        <option value="$PROJECT_DIR$/vendor1/fruitcake/laravel-cors/tests" />
+        <option value="$PROJECT_DIR$/vendor1/ralouphie/getallheaders/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/object-enumerator/tests" />
+        <option value="$PROJECT_DIR$/vendor1/facade/ignition-contracts/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpspec/prophecy/tests" />
+        <option value="$PROJECT_DIR$/vendor1/nesbot/carbon/tests" />
+        <option value="$PROJECT_DIR$/vendor1/tijsverkoyen/css-to-inline-styles/tests" />
+        <option value="$PROJECT_DIR$/vendor1/opis/closure/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/cli-parser/tests" />
+        <option value="$PROJECT_DIR$/vendor1/doctrine/lexer/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/comparator/tests" />
+        <option value="$PROJECT_DIR$/vendor1/filp/whoops/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpunit/php-file-iterator/tests" />
+        <option value="$PROJECT_DIR$/vendor1/doctrine/inflector/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/resource-operations/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/diff/tests" />
+        <option value="$PROJECT_DIR$/vendor1/fakerphp/faker/tests" />
+        <option value="$PROJECT_DIR$/vendor1/webmozart/assert/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpunit/php-timer/tests" />
+        <option value="$PROJECT_DIR$/vendor1/brick/math/tests" />
+        <option value="$PROJECT_DIR$/vendor1/league/flysystem/tests" />
+        <option value="$PROJECT_DIR$/vendor1/mockery/mockery/tests" />
+        <option value="$PROJECT_DIR$/vendor1/laravel/tinker/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/environment/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpunit/php-text-template/tests" />
+        <option value="$PROJECT_DIR$/vendor1/laravel/framework/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/global-state/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/exporter/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/code-unit/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpoption/phpoption/tests" />
+        <option value="$PROJECT_DIR$/vendor1/league/commonmark/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/object-reflector/tests" />
+        <option value="$PROJECT_DIR$/vendor1/fideloper/proxy/tests" />
+        <option value="$PROJECT_DIR$/vendor1/ramsey/uuid/tests" />
+        <option value="$PROJECT_DIR$/vendor1/paragonie/random_compat/tests" />
+        <option value="$PROJECT_DIR$/vendor1/league/mime-type-detection/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/recursion-context/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/lines-of-code/tests" />
+        <option value="$PROJECT_DIR$/vendor1/mpdf/mpdf/tests" />
+        <option value="$PROJECT_DIR$/vendor1/vlucas/phpdotenv/tests" />
+        <option value="$PROJECT_DIR$/vendor1/guzzlehttp/guzzle/tests" />
+        <option value="$PROJECT_DIR$/vendor1/nikic/php-parser/tests" />
+        <option value="$PROJECT_DIR$/vendor1/egulias/email-validator/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/type/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/code-unit-reverse-lookup/tests" />
+        <option value="$PROJECT_DIR$/vendor1/setasign/fpdi/tests" />
+        <option value="$PROJECT_DIR$/vendor1/nunomaduro/collision/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpunit/php-invoker/tests" />
+        <option value="$PROJECT_DIR$/vendor1/sebastian/complexity/tests" />
+        <option value="$PROJECT_DIR$/vendor1/graham-campbell/result-type/tests" />
+        <option value="$PROJECT_DIR$/vendor1/myclabs/deep-copy/tests" />
+        <option value="$PROJECT_DIR$/vendor1/doctrine/instantiator/tests" />
+        <option value="$PROJECT_DIR$/vendor1/voku/portable-ascii/tests" />
+        <option value="$PROJECT_DIR$/vendor1/asm89/stack-cors/tests" />
+        <option value="$PROJECT_DIR$/vendor1/phpunit/php-code-coverage/tests" />
+        <option value="$PROJECT_DIR$/vendor1/monolog/monolog/tests" />
+        <option value="$PROJECT_DIR$/vendor1/dnoegel/php-xdg-base-dir/tests" />
+        <option value="$PROJECT_DIR$/vendor1/guzzlehttp/psr7/tests" />
+        <option value="$PROJECT_DIR$/vendor1/facade/flare-client-php/tests" />
+        <option value="$PROJECT_DIR$/vendor1/ramsey/collection/tests" />
+        <option value="$PROJECT_DIR$/vendor1/hamcrest/hamcrest-php/tests" />
+        <option value="$PROJECT_DIR$/vendor1/niklasravnsborg/laravel-pdf/tests" />
+        <option value="$PROJECT_DIR$/tests" />
+      </list>
+    </option>
+  </component>
+</project>
