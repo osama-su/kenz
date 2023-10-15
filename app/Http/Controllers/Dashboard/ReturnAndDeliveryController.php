@@ -94,7 +94,7 @@ class ReturnAndDeliveryController extends Controller
                 return $bill->billDetails->map(function ($billDetail) {
                     $name = $billDetail->product->name ?? '-';
                     if ($billDetail->delivery_status != null) {
-                        $name = $billDetail->product->name . '-' . $billDetail->delivery_status == 'yes' ? 'تم التسليم' : 'لم يتم التسليم';
+                        $name = $billDetail->product->name . '-' . ($billDetail->delivery_status === 'yes' ? 'تم التسليم' : 'لم يتم التسليم');
                     }
                     return $name ?? '-';
                 })->implode("-");
@@ -293,6 +293,31 @@ class ReturnAndDeliveryController extends Controller
         }
 
         return redirect()->route('dashboard.deliveries.edit', ['delivery' => $delivery->id])
+            ->with(['status' => 'success', 'message' => 'تم الحفظ بنجاح']);
+    }
+
+    public function destroy(Bill $delivery): RedirectResponse
+    {
+        $this->authorize('delete_delivery');
+
+        $delivery->delete();
+
+        return redirect()->route('dashboard.deliveries.index')->with(['status' => 'success', 'message' => 'تم الحذف بنجاح']);
+    }
+
+    public function userUpdate(Request $request, Bill $delivery)
+    {
+
+        $delivery->user()->update($request->only([
+            'name' => 'required',
+            'phone' => 'required',
+            'gov' => 'required',
+            'address' => 'required',
+            'mobile' => 'required',
+            'notes' => 'required',
+        ]));
+
+        return redirect()->route('dashboard.bills.edit', ['bill' => $delivery->id])
             ->with(['status' => 'success', 'message' => 'تم الحفظ بنجاح']);
     }
 }
