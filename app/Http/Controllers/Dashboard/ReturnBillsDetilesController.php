@@ -30,16 +30,16 @@ class ReturnBillsDetilesController extends Controller
      */
     public function store(BillDetiesRequest $request, Bill $delivery)
     {
-        
-        
+
+
    $product = Product::where('id',$request->product_id)->first();
 
       if($product->inventory()->sum('qty')==0||$product->inventory()->sum('qty') < $request->qty){
                return redirect()->back()
            ->with(['status' => 'danger', 'message' => 'عفوا الكمية غير متوفرة']);
         }
-        
-        
+
+
         $billDetails = $delivery->billDetails()->create([
             'product_id' => $request->product_id,
              'size' =>implode(',',$request->size),
@@ -48,18 +48,18 @@ class ReturnBillsDetilesController extends Controller
             'qty' => $request->qty,
             'price' => ($request->price * $request->qty),
         ]);
-     
-       
+
+
         $billDetails->product->inventory()->create(['bill_id'=>$delivery->id,'qty'=>-$request->qty]);
 
-       
+
         $price = $delivery->billDetails()->sum('price');
-        $price_after = $delivery->billDetails()->sum('price') 
+        $price_after = $delivery->billDetails()->sum('price')
         + $delivery->delivery_fee
         ;
 
         if ($delivery->discount_percentage) {
-            $price_after = ($delivery->billDetails()->sum('price') 
+            $price_after = ($delivery->billDetails()->sum('price')
             + $delivery->delivery_fee
             ) -($delivery->discount_percentage);
         }
@@ -90,20 +90,20 @@ class ReturnBillsDetilesController extends Controller
      */
     public function update(UpdateBillRequest $request, Bill $delivery, BillDetail $billDetail): RedirectResponse
     {
-        
+
        $product = Product::where('id',$request->product_id)->first();
 
       if($product->inventory()->sum('qty')==0||$product->inventory()->sum('qty')< ($billDetail->product->inventory()->sum('qty') - $request->qty)){
                return redirect()->back()
            ->with(['status' => 'danger', 'message' => 'عفوا الكمية غير متوفرة']);
         }
-        
-     
+
+
           if ($request->qty > $billDetail->qty) {
 
                $billDetail->product->inventory()->create(['bill_id'=>$delivery->id,'qty'=> -($request->qty-$billDetail->qty)]);
         }
-        
+
       elseif ($request->qty < $billDetail->qty) {
                $billDetail->product->inventory()->create(['bill_id'=>$delivery->id,'qty'=>($billDetail->qty  - $request->qty)]);
         }
@@ -112,29 +112,26 @@ class ReturnBillsDetilesController extends Controller
                 'price' => ($billDetail->product->price * $request->qty),
             ]);
         }
-        
-          if($request->delivery_status!=null){
-            if($delivery->company==null){
-                      return redirect()->back()
-           ->with(['status' => 'danger', 'message' => 'من فضلك قم باختيار المندوب لتتكمن من تغير حالة ']);
-            }
-              
+
+          if($request->delivery_status != null && $delivery->company == null) {
+                    return redirect()->back()
+         ->with(['status' => 'danger', 'message' => 'من فضلك قم باختيار المندوب لتتكمن من تغير حالة ']);
           }
-        
-        
+
+
         $billDetail->update([
             'product_id' => $request->product_id,
          'size' =>implode(',',$request->size),
             'color' =>implode(',',$request->color) ,
             'model' =>implode(',',$request->model),
             'qty' => $request->qty,
-        
+
         ]);
-     
-    
-        
+
+
+
         $price = $delivery->billDetails()->sum('price');
-        $price_after = $delivery->billDetails()->sum('price') 
+        $price_after = $delivery->billDetails()->sum('price')
         + ($delivery->delivery_fee)
         ;
 
@@ -145,10 +142,10 @@ class ReturnBillsDetilesController extends Controller
         $delivery->update(['price' => $price, 'price_after' => $price_after]);
 
         if ($request->delivery_status == 'no') {
-            
+
 
             $billDetail->product->inventory()->create(['bill_id'=>$delivery->id,'qty'=>($billDetail->qty)]);
-  
+
             $delivery->update(['price' => ($delivery->billDetails()->sum('price') - $billDetail->price),
                 'price_after' => ($delivery->billDetails()->sum('price')
                 + $delivery->delivery_fee
@@ -177,25 +174,25 @@ class ReturnBillsDetilesController extends Controller
              $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' => ($billDetail->product->price * $request->qty)-($delivery->discount_percentage),'type'=>$request->delivery_status=='yes'?'done':'return']);
       }else{
                     if($delivery->billDetails()->withTrashed()->where('discount_type','yes')->count()==0){
-  $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $request->qty)-($delivery->discount_percentage),'type'=>$request->delivery_status=='yes'?'done':'return']);   
+  $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $request->qty)-($delivery->discount_percentage),'type'=>$request->delivery_status=='yes'?'done':'return']);
 }else{
-      $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $request->qty),'type'=>$request->delivery_status=='yes'?'done':'return']);   
+      $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $request->qty),'type'=>$request->delivery_status=='yes'?'done':'return']);
 }
 
-      }                    
-               
-                  
+      }
+
+
             }
-                  
+
         }
 
   $billDetail->update(['delivery_status' => $request->delivery_status,      'discount_type' => $delivery->discount_percentage==0||$delivery->discount_percentage==null?null:'yes']);
-  
-  
+
+
     if($delivery->billDetails()->count()==$delivery->billDetails()->where('delivery_status','yes')->count()){
                         $delivery->update(['delivery_status'=>'yes']);
                     }
-        return redirect()->back()->with(['status' => 'success', 'message' => 'تم لحفظ بنجاح']);
+        return redirect()->route('dashboard.deliveries.edit', $delivery->id)->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
     }
 
     /**
@@ -218,7 +215,7 @@ class ReturnBillsDetilesController extends Controller
 
             $delivery->update([
                 'price' => (($b->billDetails()->sum('price') - $billDetail->price)),
-                'price_after' => ((($b->billDetails()->sum('price') - $billDetail->price) 
+                'price_after' => ((($b->billDetails()->sum('price') - $billDetail->price)
                 + $b->delivery_fee
                 ) - ($b->discount_percentage)),
             ]);
@@ -233,13 +230,13 @@ class ReturnBillsDetilesController extends Controller
              $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' => ($billDetail->product->price * $billDetail->qty)-($delivery->discount_percentage),'type'=>'return']);
       }else{
                       if($delivery->billDetails()->withTrashed()->where('discount_type','yes')->count()==0){
-  $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $billDetail->qty)-($delivery->discount_percentage),'type'=>'return']);   
+  $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $billDetail->qty)-($delivery->discount_percentage),'type'=>'return']);
 }else{
-      $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $billDetail->qty),'type'=>'return']);   
+      $delivery->company->wallet()->create(['bill_id'=>$delivery->id,'amount' =>($billDetail->product->price * $billDetail->qty),'type'=>'return']);
 }
 
       }
-                  
+
             }
              $billDetail->update(['delivery_status' => 'no',  'discount_type' => $delivery->discount_percentage==0||$delivery->discount_percentage==null?null:'yes',]);
 
