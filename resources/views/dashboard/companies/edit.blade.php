@@ -306,6 +306,81 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b example example-compact">
+                <!--begin::Form-->
+                <div class="card-header">
+                    <h3 class="card-title">الفواتير</h3>
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable3">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>اسم العميل</th>
+                            <th>المحافظة</th>
+                            <th>عنوان العميل</th>
+                            <th>رقم هاتف العميل</th>
+                            <th>اسم المورد</th>
+                            <th>اسم المنتج</th>
+                            <th>الكمية</th>
+                            <th>اجمالي السعر</th>
+                            <th>تاريخ الانشاء</th>
+                            <th>الاحداث</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($company->bill as $bill)
+                            <tr id="row-{{ $bill->id }}">
+                                <td>{{$bill->id??'-'}}</td>
+                                <td>{{$bill->user->name??'-'}}</td>
+                                <td>{{$bill->user->gov??'-'}}</td>
+                                <td>{{$bill->user->address??'-'}}</td>
+                                <td>{{$bill->user->mobile??'-'}}</td>
+                                <td>{{$bill->supplier->name??'-'}}</td>
+                                <td>{{ rtrim($bill->billDetails->map(function ($billDetails) {
+    $product_name = $billDetails->product->name ?? '-';
+    return $product_name . '-';
+})->implode(''), '-') }}</td>
+
+                                <td>{{ rtrim($bill->billDetails->map(function ($billDetails) {
+    $product_qty = $billDetails->qty ?? '-';
+    return $product_qty . '-';
+})->implode(''), '-') }}</td>
+                                <td>{{$bill->price_after }}</td>
+
+                                <td>{{ $bill->created_at ?? '-' }}</td>
+                                <td>
+                                    @can('update_company')
+                                        <a href="{{route('dashboard.deliveries.edit', ['delivery' => $bill->id])}}"
+                                           class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                    @endcan
+                                    @can('delete_company')
+                                        <a data-url="{{ route('dashboard.deliveries.destroy',['delivery' => $bill->id]) }}"
+                                           data-item-id="{{ $bill->id }}"
+                                           class="btn btn-sm btn-clean btn-icon btn-icon-md delete-button"
+                                           data-toggle="modal"
+                                           data-target="#delete_modal">
+                                            <i class="la la-trash"></i>
+                                        </a>
+                                    @endcan
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::Form-->
+            </div>
+            <!--end::Card-->
+        </div>
+    </div>
+
     @include('dashboard.includes.delete-modal',['action_message' => 'هذه المحافظة'])
 @endsection
 @section('scripts')
@@ -373,7 +448,7 @@
     <!--end::Page Scripts-->
     <script>
         $(document).ready(function () {
-          
+
             var table = $('#kt_datatable2').DataTable({
                 responsive: true,
                 // Pagination settings
@@ -410,8 +485,8 @@
                     }
                 }
             });
-            
-              $('#kt_datatable2 thead tr').clone(true).appendTo('#kt_datatable2 thead');
+
+            $('#kt_datatable2 thead tr').clone(true).appendTo('#kt_datatable2 thead');
             $('#kt_datatable2 thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
                 $(this).html('<input type="text" class="col-md-6" />');
@@ -424,6 +499,62 @@
                             .draw();
                     }
                 });
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#kt_datatable3 thead tr').clone(true).appendTo('#kt_datatable3 thead');
+            $('#kt_datatable3 thead tr:eq(1) th').each(function (i) {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="col-md-6" />');
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+            var table = $('#kt_datatable3').DataTable({
+                responsive: true,
+                // Pagination settings
+                dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
+			<'row'<'col-sm-12'tr>>
+			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+                buttons: [
+                    'print',
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                ], language: {
+                    "sEmptyTable": "ليست هناك بيانات متاحة في الجدول",
+                    "sLoadingRecords": "جارٍ التحميل...",
+                    "sProcessing": "جارٍ التحميل...",
+                    "sLengthMenu": "أظهر _MENU_ مدخلات",
+                    "sZeroRecords": "لم يعثر على أية سجلات",
+                    "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+                    "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
+                    "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+                    "sInfoPostFix": "",
+                    "sSearch": "ابحث:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "الأول",
+                        "sPrevious": "السابق",
+                        "sNext": "التالي",
+                        "sLast": "الأخير"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": تفعيل لترتيب العمود تصاعدياً",
+                        "sSortDescending": ": تفعيل لترتيب العمود تنازلياً"
+                    }
+                }
             });
         });
 
