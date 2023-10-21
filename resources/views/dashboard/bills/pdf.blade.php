@@ -177,7 +177,7 @@ $company = Company::where('id', Request()->company_id)->first();
         $bill->update(['company_id' => Request()->company_id,
                       'delivery_fee' => $company ? ($company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0) : 0]);
       }
-         
+
                   $price = -$bill->price;
 
                   if ($bill->discount_percentage) {
@@ -188,8 +188,8 @@ $company = Company::where('id', Request()->company_id)->first();
 
                   }
                   $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
-                  
-          
+
+
         @endphp
         <div id="invoice-POS">
 
@@ -214,6 +214,7 @@ $company = Company::where('id', Request()->company_id)->first();
                     <h6> المحافظة: {{$bill->user->gov??'-'}}</br> </h6>
                     <h6> العنوان: {{$bill->user->address??'-'}}</br> </h6>
                     <h6> اسم المندوب: {{$bill->company->name??'-'}}</br> </h6>
+                    <h6> اسم المورد: {{ $bill->supplier->name??'-'  }}<br> </h6>
 
                 </div>
             </div><!--End Invoice Mid-->
@@ -280,8 +281,8 @@ $company = Company::where('id', Request()->company_id)->first();
         <br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br>
         <br><br><br><br>
-        
-      
+
+
 
     @endforeach
 @endif
