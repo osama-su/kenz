@@ -10,8 +10,8 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
 
 
@@ -51,6 +51,24 @@ class ReturnAndDeliveryController extends Controller
                 $q->withTrashed();
             }])->where('deleted_type', '!=', 'cancel');
 
+        }
+        if ($request->search['value'] != null) {
+            $model = $model->where('id', 'like', '%' . $request->search['value'] . '%')
+                ->orWhereHas('user', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search['value'] . '%');
+                })
+                ->orWhereHas('user', function ($q) use ($request) {
+                    $q->where('gov', 'like', '%' . $request->search['value'] . '%');
+                })
+                ->orWhereHas('user', function ($q) use ($request) {
+                    $q->where('address', 'like', '%' . $request->search['value'] . '%');
+                })
+                ->orWhereHas('user', function ($q) use ($request) {
+                    $q->where('mobile', 'like', '%' . $request->search['value'] . '%');
+                })
+                ->orWhereHas('supplier', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search['value'] . '%');
+                });
         }
         return $dataTables->eloquent($model)->addIndexColumn()
             ->editColumn('id', function (Bill $bill) {
@@ -202,26 +220,6 @@ class ReturnAndDeliveryController extends Controller
         return view('dashboard.returnBills.edit', compact('delivery', 'users', 'companies', 'products'));
     }
 
-    public function update(UpdateBillRequest $request, Bill $delivery): RedirectResponse
-    {
-        $billDetails = $delivery->update([
-            'product_id' => $request->product_id,
-            'size' => $request->size,
-            'color' => $request->color,
-            'model' => $request->model,
-            'qty' => $request->qty,
-            'price' => ($request->price * $request->qty),
-        ]);
-
-        $delivery->update([
-            'price' => $delivery->billDetails()->sum('price'),
-            'price_after' => $delivery->billDetails()->sum('price') + $delivery->delivery_fee
-        ]);
-
-
-        return redirect()->route('dashboard.returnBills.index')->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
-    }
-
     public function totalPrice(Bill $delivery, Request $request)
     {
         $price = $request->price + $request->delivery_fee;
@@ -296,6 +294,26 @@ class ReturnAndDeliveryController extends Controller
             ->with(['status' => 'success', 'message' => 'تم الحفظ بنجاح']);
     }
 
+    public function update(UpdateBillRequest $request, Bill $delivery): RedirectResponse
+    {
+        $billDetails = $delivery->update([
+            'product_id' => $request->product_id,
+            'size' => $request->size,
+            'color' => $request->color,
+            'model' => $request->model,
+            'qty' => $request->qty,
+            'price' => ($request->price * $request->qty),
+        ]);
+
+        $delivery->update([
+            'price' => $delivery->billDetails()->sum('price'),
+            'price_after' => $delivery->billDetails()->sum('price') + $delivery->delivery_fee
+        ]);
+
+
+        return redirect()->route('dashboard.returnBills.index')->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
+    }
+
     public function destroy(Bill $delivery): RedirectResponse
     {
         $this->authorize('delete_delivery');
@@ -308,14 +326,7 @@ class ReturnAndDeliveryController extends Controller
     public function userUpdate(Request $request, Bill $delivery)
     {
 
-        $delivery->user()->update($request->only([
-            'name' => 'required',
-            'phone' => 'required',
-            'gov' => 'required',
-            'address' => 'required',
-            'mobile' => 'required',
-            'notes' => 'required',
-        ]));
+        $delivery->user()->update($request->except('_token'));
 
         return redirect()->route('dashboard.bills.edit', ['bill' => $delivery->id])
             ->with(['status' => 'success', 'message' => 'تم الحفظ بنجاح']);
