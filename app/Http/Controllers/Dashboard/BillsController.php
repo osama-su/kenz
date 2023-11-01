@@ -124,6 +124,7 @@ class BillsController extends Controller
             });
         }
 
+
         if ($request->search['value'] != null) {
             $model = $model->where('id', 'like', '%' . $request->search['value'] . '%')
                 ->orWhereHas('user', function ($q) use ($request) {
@@ -142,7 +143,6 @@ class BillsController extends Controller
                     $q->where('name', 'like', '%' . $request->search['value'] . '%');
                 });
         }
-
 
         return $dataTables->eloquent($model)->addIndexColumn()
             ->editColumn('id', function (Bill $bill) {
@@ -206,6 +206,16 @@ class BillsController extends Controller
             })
             ->rawColumns(['action', 'product_name', 'product_qty', 'select'])
             ->startsWithSearch()
+            ->filterColumn('name', function ($query, $keyword) {
+                $query->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('name', 'like', '%' . $keyword . '%');
+                });
+            })
+            ->filterColumn('mobile', function ($query, $keyword) {
+                $query->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('mobile', 'like', '%' . $keyword . '%');
+                });
+            })
             ->filter(function ($query) use ($request) {
                 if ($request->name) {
                     $query->whereHas('user', function ($q) use ($request) {
