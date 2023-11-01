@@ -31,6 +31,10 @@ class CompaniesController extends Controller
 
         $companies = Company::orderBy('created_at', 'desc')->get();
 
+        if ($request->date_from || $request->date_to) {
+            $companies = $companies->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
+
         return view('dashboard.companies.index', compact('companies'));
     }
 

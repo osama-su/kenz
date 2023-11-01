@@ -9,6 +9,7 @@ use App\Models\Role;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RolesController extends Controller
@@ -27,11 +28,15 @@ class RolesController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $this->authorize('read_role');
 
         $roles = Role::all();
+
+        if ($request->date_from || $request->date_to) {
+            $roles = $roles->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
 
         return view('dashboard.roles.index', compact('roles'));
     }
@@ -46,7 +51,6 @@ class RolesController extends Controller
         $this->authorize('create_role');
 
         $permissions = Permission::where('model', '!=', 'permission')->get()->groupBy('model');
-
         return view('dashboard.roles.create', compact('permissions'));
     }
 

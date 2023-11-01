@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UsersController extends Controller
@@ -17,11 +18,15 @@ class UsersController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(): View
+    public function index(Request $request): View
     {
         $this->authorize('read_user');
 
         $users = User::where('role_id','!=','2')->orderBy('created_at', 'desc')->get();
+
+        if ($request->date_from || $request->date_to) {
+            $users = $users->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
 
         return view('dashboard.users.index', compact('users'));
     }

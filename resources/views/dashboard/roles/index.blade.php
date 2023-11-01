@@ -39,7 +39,30 @@
             </div>
         </div>
         <div class="card-body">
+            <form action="{{route('dashboard.roles.index')}}" method="get">
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <label>التاريخ من:</label>
+                        <input type="date"
+                               name="date_from"
+                               class="form-control created_at"
+                               placeholder="من فضلك ادخل التاريخ من">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>التاريخ الي:</label>
+                        <input type="date"
+                               name="date_to"
+                               class="form-control updated_at"
+                               placeholder="من فضلك ادخل التاريخ الي">
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        {!! csrf_field() !!}
+                        <button class="col-md-12 btn btn-success" type="submit">بحث</button>
+                    </div>
+                </div>
+            </form>
             <!--begin: Datatable-->
+            <div class="mt-3">
             <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
                 <thead>
                 <tr>
@@ -74,10 +97,11 @@
                                 </a>
                             @endcan
                         </td>
-                    </tr>
+                       </tr>
                 @endforeach
                 </tbody>
             </table>
+            </div>
             <!--end: Datatable-->
         </div>
     </div>

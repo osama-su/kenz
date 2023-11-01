@@ -30,6 +30,10 @@ class SuppliersController extends Controller
 
         $suppliers = Supplier::orderBy('created_at', 'desc')->get();
 
+        if ($request->date_from || $request->date_to) {
+            $suppliers = $suppliers->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
+
         return view('dashboard.suppliers.index', compact('suppliers'));
     }
 
