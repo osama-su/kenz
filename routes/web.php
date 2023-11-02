@@ -79,6 +79,9 @@ Route::namespace('Dashboard')->group(function () {
         Route::post('generate_pdf', 'BillsController@generate_pdf')->name('generate_pdf');
         Route::post('all_pdf', 'BillsController@all_pdf')->name('all_pdf');
 
+        // Expenses Route
+        Route::resource('expenses', 'ExpensesController')->except('show');
+
 
     Route::group(['prefix' => '{product}'], function () {
                 Route::resource('productInventories', 'ProductInventoriesController')->except('show', 'index');
