@@ -77,6 +77,9 @@
                                             @if(ucfirst($model) =='Dashboard')
                                                 الرئسية
                                             @endif
+                                            @if(ucfirst($model) =='Supplier')
+                                                الموردين
+                                            @endif
                                         </label>
                                         <select
                                             class="form-control kt_select2_selector kt-select2 {{ $errors->has("permissions") ? 'is-invalid' : '' }}"
