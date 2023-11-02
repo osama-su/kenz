@@ -50,7 +50,7 @@ Route::namespace('Dashboard')->group(function () {
         Route::resource('bills', 'BillsController')->except('show');
         Route::get('bills/show', 'BillsController@show')->name('bills.show');
 
-        
+
         Route::group(['prefix' => 'bills'], function () {
             Route::group(['prefix' => '{bill}'], function () {
                      Route::post('/user/update', 'BillsController@userEdit')->name('bills.user.store');
@@ -98,12 +98,13 @@ Route::namespace('Dashboard')->group(function () {
         });
 
         //Return and delivery Route
-        Route::resource('deliveries', 'ReturnAndDeliveryController')->only('index', 'edit', 'update');
+        Route::resource('deliveries', 'ReturnAndDeliveryController')->only('index', 'edit', 'update', 'destroy');
          Route::get('deliveries/show', 'ReturnBillsDetilesController@show')->name('deliveries.billDetail.show');
          Route::get('deliverie/show', 'ReturnAndDeliveryController@show')->name('deliveries.bill.show');
         Route::group(['prefix' => 'deliveries'], function () {
             Route::group(['prefix' => '{delivery}'], function () {
                 Route::post('/storePrice', 'ReturnAndDeliveryController@totalPrice')->name('deliveries.storePrice');
+                Route::post('userUpdate', 'ReturnAndDeliveryController@userUpdate')->name('deliveries.userUpdate');
                 Route::group(['prefix' => 'billDetail'], function () {
                     Route::post('/store', 'ReturnBillsDetilesController@store')->name('deliveries.billDetail.store');
                     Route::group(['prefix' => '{billDetail}'], function () {
