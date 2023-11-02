@@ -201,6 +201,9 @@ class BillsController extends Controller
             ->addColumn('action', function (Bill $bill) {
                 return view('dashboard.returnBills.buttons', compact('bill'));
             })
+            ->addColumn('select_return', function (Bill $bill) {
+                return view('dashboard.returnBills.select', compact('bill'));
+            })
             ->addColumn('select', function (Bill $bill) {
                 return view('dashboard.bills.select', compact('bill'));
             })

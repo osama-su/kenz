@@ -34,8 +34,8 @@
 												</svg>
                                                 <!--end::Svg Icon-->
 											</span>اضافة جديد </a>
-            @endcan
-            <!--end::Button-->
+                @endcan
+                <!--end::Button-->
             </div>
         </div>
         <div class="card-body">
@@ -132,7 +132,7 @@
                         <label style="float: right;"> المستخدم:</label>
                         <select name="created_by" class="form-control ">
                             <option value="">اختار</option>
-                            
+
                             @if($users->count())
                                 @foreach($users as $user)
                                     <option
@@ -159,12 +159,12 @@
             <div class="mt-3">
                 <form action="{{route('dashboard.generate_pdf')}}" method="post">
 
-                    
+
                     <table class="table table-separate table-head-custom table-checkable responsive" id="kt_datatable">
-                    <thead>
-                    <tr>
-                   @can('print_bill')
-                            <th>اختار</th>
+                        <thead>
+                        <tr>
+                            @can('print_bill')
+                                <th>اختار</th>
                             @endcan
                             <th>#</th>
                             <th>اسم العميل</th>
@@ -176,11 +176,14 @@
                             <th>الكمية</th>
                             <th>اجمالي السعر</th>
                             <th>حالة الطبع</th>
-                            <th>تاريخ الإنشاء </th>
+                            <th>تاريخ الإنشاء</th>
+                            @can('update_delivery')
+                                <th>حالة التسليم الكلي</th>
+                            @endcan
                             <th>الاحداث</th>
-                    </tr>
-                    </thead>
-                </table>
+                        </tr>
+                        </thead>
+                    </table>
 
                     <div class="col-md-12 mt-5">
                         @include('dashboard.includes.company-modal',['action_message' => ''])
@@ -193,16 +196,16 @@
                 </form>
                 @can('print_bill')
 
-                <a class="btn btn-primary col-md-12 mt-5 company-button"
-                   data-toggle="modal"
-                   data-target="#company_modal">
-                    اطبع المحدد
-                </a>
-                <a class="btn btn-primary col-md-12 mt-5 all_company-button"
-                   data-toggle="modal"
-                   data-target="#all_company_modal">
-                    اطبع الكل
-                </a>
+                    <a class="btn btn-primary col-md-12 mt-5 company-button"
+                       data-toggle="modal"
+                       data-target="#company_modal">
+                        اطبع المحدد
+                    </a>
+                    <a class="btn btn-primary col-md-12 mt-5 all_company-button"
+                       data-toggle="modal"
+                       data-target="#all_company_modal">
+                        اطبع الكل
+                    </a>
                 @endcan
             </div>
             <!--end: Datatable-->
@@ -218,80 +221,102 @@
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
     <script>
-         // begin first table
-         
-         var array= [
-                // {data: 'select', name: 'select', defaultContent: '-'},
-                {data: 'id', name: 'id', defaultContent: '-'},
-                {data: 'name', name: 'name', defaultContent: '-'},
-                {data: 'gov', name: 'gov', defaultContent: '-'},
-                {data: 'address', name: 'address', defaultContent: '-'},
-                {data: 'mobile', name: 'mobile', defaultContent: '-'},
-                {data: 'supplier', name: 'supplier', defaultContent: '-'},
-                {data: 'product_name', name: 'product_name', defaultContent: '-'},
-                {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
-                {data: 'price_after', name: 'price_after', defaultContent: '-'},
-                {data: 'print_status', name: 'print_status', defaultContent: '-'},
-                {data: 'created_by', name: 'created_by', defaultContent: '-'},
-                {data: 'action', orderable: false, searchable: false, className: 'text-center'}
+        // begin first table
 
-            ];
-         
-                           @can('print_bill')
-         var array= [
-                {data: 'select', name: 'select', defaultContent: '-'},
-                {data: 'id', name: 'id', defaultContent: '-'},
-                {data: 'name', name: 'name', defaultContent: '-'},
-                {data: 'gov', name: 'gov', defaultContent: '-'},
-                {data: 'address', name: 'address', defaultContent: '-'},
-                {data: 'mobile', name: 'mobile', defaultContent: '-'},
-                {data: 'supplier', name: 'supplier', defaultContent: '-'},
-                {data: 'product_name', name: 'product_name', defaultContent: '-'},
-                {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
-                {data: 'price_after', name: 'price_after', defaultContent: '-'},
-                {data: 'print_status', name: 'print_status', defaultContent: '-'},
-                {data: 'created_by', name: 'created_by', defaultContent: '-'},
-                {data: 'action', orderable: false, searchable: false, className: 'text-center'}
+        var array = [
+            // {data: 'select', name: 'select', defaultContent: '-'},
+            {data: 'id', name: 'id', defaultContent: '-'},
+            {data: 'name', name: 'name', defaultContent: '-'},
+            {data: 'gov', name: 'gov', defaultContent: '-'},
+            {data: 'address', name: 'address', defaultContent: '-'},
+            {data: 'mobile', name: 'mobile', defaultContent: '-'},
+            {data: 'supplier', name: 'supplier', defaultContent: '-'},
+            {data: 'product_name', name: 'product_name', defaultContent: '-'},
+            {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
+            {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            {data: 'print_status', name: 'print_status', defaultContent: '-'},
+            {data: 'created_by', name: 'created_by', defaultContent: '-'},
+            {data: 'select_return', name: 'select_return', defaultContent: '-'},
+            {data: 'action', orderable: false, searchable: false, className: 'text-center'},
 
-            ];
+        ];
 
-                     @endcan
+        @can('print_bill')
+        var array = [
+            {data: 'select', name: 'select', defaultContent: '-'},
+            {data: 'id', name: 'id', defaultContent: '-'},
+            {data: 'name', name: 'name', defaultContent: '-'},
+            {data: 'gov', name: 'gov', defaultContent: '-'},
+            {data: 'address', name: 'address', defaultContent: '-'},
+            {data: 'mobile', name: 'mobile', defaultContent: '-'},
+            {data: 'supplier', name: 'supplier', defaultContent: '-'},
+            {data: 'product_name', name: 'product_name', defaultContent: '-'},
+            {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
+            {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            {data: 'print_status', name: 'print_status', defaultContent: '-'},
+            {data: 'created_by', name: 'created_by', defaultContent: '-'},
+            {data: 'select_return', name: 'select_return', defaultContent: '-'},
+            {data: 'action', orderable: false, searchable: false, className: 'text-center'},
+
+        ];
+
+        @endcan
+        $('#kt_datatable thead tr').clone(true).appendTo('#kt_datatable thead');
+        $('#kt_datatable thead tr:eq(1) th').each(function (i) {
+            if (i === 1 || i === 2 || i === 5) {
+                $(this).html('<input type="text" class="form-control" />');
+
+                var title = $(this).text();
+                $(this).html('<input type="text" class="col-md-12" />');
+
+                $('input', this).on('keyup change', function () {
+                    // console.log(table1.column(i).key());
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            } else {
+                $(this).html('');
+            }
+        });
         var table1 = $('#kt_datatable').DataTable({
             serverSide: true,
             orderCellsTop: true,
             fixedHeader: true,
-             language: {
-                 url: "//cdn.datatables.net/plug-ins/1.11.3/i18n/ar.json",
-             
+            language: {
+                // url: "//cdn.datatables.net/plug-ins/1.11.3/i18n/ar.json",
             },
             processing: true,
             dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
                       <'row'<'col-sm-12'tr>>
                       <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
-     buttons: ['print', 'copyHtml5','excel', 'csvHtml5', 'pdfHtml5',],
+            buttons: ['print', 'copyHtml5', 'excel', 'csvHtml5', 'pdfHtml5',],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             order: [[0, "desc"]],
             ajax: {
-           url: '{{ route('dashboard.bills.show',['date_from'=>Request()->date_from,'date_to'=>Request()->date_to,'supplier_id'=>Request()->supplier_id,'gov'=>Request()->gov,'product_id'=>Request()->product_id,'created_by'=>Request()->created_by,'print'=>Request()->print,]) }}',
-               data: function (d) {
+                url: '{{ route('dashboard.bills.show',['date_from'=>Request()->date_from,'date_to'=>Request()->date_to,'supplier_id'=>Request()->supplier_id,'gov'=>Request()->gov,'product_id'=>Request()->product_id,'created_by'=>Request()->created_by,'print'=>Request()->print,]) }}',
+                data: function (d) {
                     d.name = $('#name').val();
                     d.gov = $('#gov').val();
+                    d.mobile = $('#mobile').val();
                     d.created_by = $('#created_by').val();
                     d.delivery_status = $('#delivery_status').val();
                     d.qty = $('#qty').val();
                     d.delivery_now_status = $('#delivery_now_status').val();
                     d.price_after = $('#price_after').val();
-                    d.delivery_status_type = $('#delivery_status_type').val();
                 }
 
             },
-            columns:array, createdRow: function (row, data, index) {
+            columns: array, createdRow: function (row, data, index) {
                 $(row).attr('id', 'row-' + data['id']);
             },
         });
-        // $('#name').on('keyup change', function () {
-        //     $('#kt_datatable').DataTable().draw(true);
-        // });
+        $('#name').on('keyup change', function () {
+            $('#kt_datatable').DataTable().draw(true);
+        });
         // $('#gov').on('keyup change', function () {
         //     $('#kt_datatable').DataTable().draw(true);
         // });
