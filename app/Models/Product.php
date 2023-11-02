@@ -26,6 +26,7 @@ class Product extends Model
         'color',
         'wholesale_price',
         'price',
+        'type',
     ];
 
 public function inventory()
@@ -36,7 +37,7 @@ public function inventory()
             return $this->hasMany(BillDetail::class, 'product_id');
 
      }
-     
+
           public function qties(){
             return $this->hasMany(ProductQty::class, 'product_id');
 

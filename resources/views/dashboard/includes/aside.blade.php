@@ -53,6 +53,20 @@
                 </li>
                 @endcan
                 @endhasRoleOnModel
+                @hasRoleOnModel('product')
+                @can('read_product')
+                    <li class="menu-item {{ request()->is('expenses*') ? 'menu-item-open menu-item-here' : '' }}">
+                        <a @can('read_product')
+                               href="{{route('dashboard.expenses.index')}}"
+                           @elsecan('create_product')
+                               href="{{route('dashboard.expenses.create')}}"
+                           @endcan
+                           class="menu-link">
+                            <span class="menu-text">المصروفات</span>
+                        </a>
+                    </li>
+                @endcan
+                @endhasRoleOnModel
                 @hasRoleOnModel('company')
                 @can('read_company')
                 <li class="menu-item {{ request()->is('companies*') ? 'menu-item-open menu-item-here' : '' }}">
