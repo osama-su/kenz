@@ -25,7 +25,7 @@ class CreateBillRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-//            'company_id' => 'required',
+            'company_id' => 'required',
             'supplier_id' => 'required',
             'qty' => 'required',
             'color' => 'required',
