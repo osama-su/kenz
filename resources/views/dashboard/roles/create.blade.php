@@ -96,13 +96,16 @@
                                                     @if(explode(' ',$operation->label)[0]=='update')
                                                         تعديل
                                                     @endif
+                                                    @if(explode(' ',$operation->label)[0]=='update_own')
+                                                        تعديل الخاص
+                                                    @endif
                                                     @if(explode(' ',$operation->label)[0]=='delete')
                                                         حذف
                                                     @endif
                                                     @if(explode(' ',$operation->label)[0]=='read')
                                                         قراءة
                                                     @endif
-       @if(explode(' ',$operation->label)[0]=='print')
+                                                    @if(explode(' ',$operation->label)[0]=='print')
                                                         طباعة
                                                     @endif
                                                 </option>

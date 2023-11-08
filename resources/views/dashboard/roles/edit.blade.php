@@ -54,7 +54,7 @@
                                 @if(str_contains($model , 'language') !== true)
                                     <div class=" col-lg-3">
                                         <label class="col-form-label" style="float:right">
-                                               @if(ucfirst($model) =='Bill')
+                                            @if(ucfirst($model) =='Bill')
                                                 الفواتير
                                             @endif
                                             @if(ucfirst($model) =='Company')
@@ -95,13 +95,16 @@
                                                     @if(explode(' ',$operation->label)[0]=='update')
                                                         تعديل
                                                     @endif
+                                                    @if(explode(' ',$operation->label)[0]=='update_own')
+                                                        تعديل الخاص
+                                                    @endif
                                                     @if(explode(' ',$operation->label)[0]=='delete')
                                                         حذف
                                                     @endif
                                                     @if(explode(' ',$operation->label)[0]=='read')
                                                         قراءة
                                                     @endif
-                                                     @if(explode(' ',$operation->label)[0]=='print')
+                                                    @if(explode(' ',$operation->label)[0]=='print')
                                                         طباعة
                                                     @endif
                                                 </option>
