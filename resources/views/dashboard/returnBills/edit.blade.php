@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <!--begin::Card-->
-
+            <form action="{{route('dashboard.deliveries.userUpdate', ['delivery' => $delivery->id])}}" method="post">
             <div class="card card-custom gutter-b example example-compact">
                 <div class="card-header">
                     <h3 class="card-title">العميل</h3>
@@ -104,8 +104,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-footer">
+                    {!! csrf_field() !!}
+                    <button type="submit" class="btn btn-primary mr-2">حفظ</button>
+                    <button type="reset" class="btn btn-secondary">الغاء</button>
+                </div>
             </div>
+            </form>
         </div>
+
         {{--        <div class="col-md-12">--}}
         {{--            <!--begin::Card-->--}}
 
@@ -287,7 +294,7 @@
                             <div class="col-md-6">
                                 <label style="float: right;"> السعر :
                                     <span class="text-danger">*</span></label>
-                                <input name="price" type="number" 
+                                <input name="price" type="number"
                                        value="{{$delivery->price?? old("price") }}"
                                        class="form-control  {{ $errors->has("price") ? 'is-invalid' : '' }}"
                                        placeholder="من فضلك ادخل السعر"/>
@@ -396,7 +403,7 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b example example-compact">
                 <div class="card-body">
-                    
+
                                  <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
                         <thead>
                         <tr>
@@ -423,7 +430,7 @@
                                 <td>{{$deliveryDetail->price??'-'}}</td>
                                 <td>{{$deliveryDetail->qty??'-'}}</td>
                                 <td>{{ $deliveryDetail->created_at ?? '-' }}</td>
-                                
+
                                                                 <td>
                                     @can('update_bill')
                                         @if($deliveryDetail->deleted_at==null)
@@ -486,7 +493,7 @@
     <!--begin::Page Scripts(used by this page)-->
     <script>
         $(document).ready(function () {
-        
+
             var table = $('#kt_datatable1').DataTable({
                 responsive: true,
                 // Pagination settings
@@ -523,7 +530,7 @@
                     }
                 }
             });
-            
+
                 $('#kt_datatable1 thead tr').clone(true).appendTo('#kt_datatable1 thead');
             $('#kt_datatable1 thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
