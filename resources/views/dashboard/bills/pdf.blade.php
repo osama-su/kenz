@@ -128,7 +128,7 @@ $company = Company::where('id', Request()->company_id)->first();
         }
 
         #invoice-POS .info {
-            display: block;
+            display: inline;
             margin-left: 0;
         }
 
@@ -161,39 +161,35 @@ $company = Company::where('id', Request()->company_id)->first();
         #invoice-POS .itemtext {
             font-size: 0.5em;
         }
-
-        #invoice-POS #legalcopy {
-            margin-top: 5mm;
-        }
     </style>
 </head>
 <body>
 @if($bills->count())
     @foreach($bills as $bill)
         @php
-      if(Request()->company_id!=$bill->company_id){
-       $bill->update(['company_id' => Request()->company_id]);
-      if($bill->delivery_fee==null||$bill->delivery_fee==0){
-        $bill->update(['company_id' => Request()->company_id,
-                      'delivery_fee' => $company ? ($company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0) : 0]);
-      }
+            if(Request()->company_id!=$bill->company_id){
+             $bill->update(['company_id' => Request()->company_id]);
+            if($bill->delivery_fee==null||$bill->delivery_fee==0){
+              $bill->update(['company_id' => Request()->company_id,
+                            'delivery_fee' => $company ? ($company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0) : 0]);
+            }
 
-                  $price = -$bill->price;
+                        $price = -$bill->price;
 
-                  if ($bill->discount_percentage) {
-                      $price = -($bill->price-$bill->discount_percentage);
-                  }
+                        if ($bill->discount_percentage) {
+                            $price = -($bill->price-$bill->discount_percentage);
+                        }
 
-                  $bill->company->wallet()->create(['amount'=>$price,'bill_id'=>$bill->id]);
+                        $bill->company->wallet()->create(['amount'=>$price,'bill_id'=>$bill->id]);
 
-                  }
-                  $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
+                        }
+                        $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
 
 
         @endphp
         <div id="invoice-POS">
 
-            <center id="top">
+            <div id="top" style="text-align: center;">
 
                 <img
                     src="data:image/png;base64, {{ base64_encode(QrCode::encoding('UTF-8')->format('png')->margin(1)->size(100)->generate(route('dashboard.bills.return',['bill'=>$bill->id]))) }}">
@@ -203,19 +199,44 @@ $company = Company::where('id', Request()->company_id)->first();
                     <h2>رقم الفاتورة :{{$bill->id??'-'}}</h2>
                     <h2>تاريخ التشاء :{{$bill->created_at??'-'}}</h2>
                 </div><!--End Info-->
-            </center><!--End InvoiceTop-->
+            </div><!--End InvoiceTop-->
 
             <div id="mid">
-                <div class="info">
-                    <h2>معلومات الفاتورة</h2>
-                    <h6>الاسم :{{$bill->user->name??'-'}}</h6></br>
-                    <h6> رقم الهاتف :{{$bill->user->mobile??'-'}} </h6></br>
-                    <h6> البريد الالكتروني :{{$bill->user->email??'-'}} </h6></br>
-                    <h6> المحافظة: {{$bill->user->gov??'-'}}</br> </h6>
-                    <h6> العنوان: {{$bill->user->address??'-'}}</br> </h6>
-                    <h6> اسم المندوب: {{$bill->company->name??'-'}}</br> </h6>
-                    <h6> اسم المورد: {{ $bill->supplier->name??'-'  }}<br> </h6>
+                <div class="info" style="display: flex; flex-direction: row; justify-content: space-between;">
+                    <table>
+                        <tr>
+                            <th colspan="2"> <span>معلومات الفاتورة</span></th>
+                        </tr>
+                        <tr>
+                            <td>الاسم</td>
+                            <td>{{$bill->user->name??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>رقم الهاتف</td>
+                            <td>{{$bill->user->mobile??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>البريد الالكتروني</td>
+                            <td>{{$bill->user->email??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>المحافظة</td>
+                            <td>{{$bill->user->gov??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>العنوان</td>
+                            <td>{{$bill->user->address??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>اسم المندوب</td>
+                            <td>{{$bill->company->name??'-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>اسم المورد</td>
+                            <td>{{ $bill->supplier->name??'-'  }}</td>
+                        </tr>
 
+                    </table>
                 </div>
             </div><!--End Invoice Mid-->
 
@@ -226,8 +247,8 @@ $company = Company::where('id', Request()->company_id)->first();
                         <tr class="tabletitle">
                             <td class="item"><h5>المنتج</h5></td>
                             <td class="Rate"><h5>الكمية</h5></td>
-                               <td class="Rate"><h5>لون</h5></td>
-                                  <td class="Rate"><h5>المقاس</h5></td>
+                            <td class="Rate"><h5>لون</h5></td>
+                            <td class="Rate"><h5>المقاس</h5></td>
                             <td class="Hours"><h5>السعر</h5></td>
                         </tr>
                         @if($bill->billDetails->count())
@@ -236,9 +257,9 @@ $company = Company::where('id', Request()->company_id)->first();
                                     <td class="tableitem"><p class="itemtext">{{$billDetails->product->name??'-'}}</p>
                                     </td>
                                     <td class="tableitem"><p class="itemtext">{{$billDetails->qty}}</p></td>
-                                     <td class="tableitem"><p class="itemtext">{{$billDetails->color??'-'}}</p>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->color??'-'}}</p>
                                     </td>
-                                        <td class="tableitem"><p class="itemtext">{{$billDetails->size??'-'}}</p>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->size??'-'}}</p>
                                     </td>
                                     <td class="tableitem"><p class="itemtext">{{$billDetails->price}} ج.م </p></td>
                                 </tr>
@@ -255,7 +276,7 @@ $company = Company::where('id', Request()->company_id)->first();
                         <tr class="tabletitle">
                             <td></td>
                             <td class="Rate"><h5>نسبة الخصم</h5></td>
-                            <td class="payment"><h5>{{$bill->discount_percentage??'-'}}  ج.م</h5></td>
+                            <td class="payment"><h5>{{$bill->discount_percentage??'-'}} ج.م</h5></td>
                         </tr>
                         <tr class="tabletitle">
                             <td></td>
@@ -278,12 +299,6 @@ $company = Company::where('id', Request()->company_id)->first();
 
             </div><!--End InvoiceBot-->
         </div><!--End Invoice-->
-        <br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br>
-        <br><br><br><br>
-
-
-
     @endforeach
 @endif
 </body>
