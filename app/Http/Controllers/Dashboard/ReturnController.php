@@ -34,7 +34,8 @@ class ReturnController extends Controller
             $search = $request->q;
 
             $movies = Bill::with('user')->whereHas('user', function ($q) use ($search) {
-                $q->where("mobile", "like", "%$search%");
+                $q->where("mobile", "like", "%$search%")
+                    ->orWhere("name", "like", "%$search%");
             })->orwhere('id', "like", "%$search%")->get();
         }
         return response()->json($movies);
