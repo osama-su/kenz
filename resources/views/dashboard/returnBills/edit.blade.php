@@ -39,7 +39,7 @@
                         <div class="col-md-6">
                             <label style="float: right;">البريد الالكتروني :
                                 <span class="text-danger">*</span></label>
-                            <input name="email" type="email"
+                            <input name="email" type="text"
                                    value="{{$delivery->user->email?? old("email") }}"
                                    class="form-control {{ $errors->has("email") ? 'is-invalid' : '' }}"
                                    placeholder="من فضلك ادخل البريد الالكتروني"/>
