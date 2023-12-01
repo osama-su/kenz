@@ -184,6 +184,7 @@ $company = Company::where('id', Request()->company_id)->first();
 
                         }
                         $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
+            $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? '-';
 
 
         @endphp
@@ -235,6 +236,11 @@ $company = Company::where('id', Request()->company_id)->first();
                             <td>اسم المورد</td>
                             <td>{{ $bill->supplier->name??'-'  }}</td>
                         </tr>
+                        <tr>
+                            <td>اسم البائع</td>
+                            <td>{{ $createdBy  }}</td>
+                        </tr>
+
 
                     </table>
                 </div>
