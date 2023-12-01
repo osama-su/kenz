@@ -23,7 +23,7 @@ class ReportController extends Controller
         $this->authorize('read_report');
 
         $users = User::where('role_id', '1')->get();
-        
+
        $suppliers = Supplier::all();
 
         $products = Product::all();
@@ -32,7 +32,9 @@ class ReportController extends Controller
 
         $users_m = User::where('role_id', '!=', '1')->get();
 
-        return view('dashboard.reports.index', compact('users_m', 'suppliers','users', 'products', 'companies'));
+        $allUsers = User::all();
+
+        return view('dashboard.reports.index', compact('allUsers','users_m', 'suppliers','users', 'products', 'companies'));
     }
 
     public function show(Request $request)
@@ -56,7 +58,7 @@ class ReportController extends Controller
         if ($request->created_by) {
             $bills = $bills->where('created_by', $request->created_by);
         }
-        
+
         if ($request->supplier_id) {
             $bills = $bills->where('supplier_id', $request->supplier_id);
         }
@@ -76,7 +78,7 @@ class ReportController extends Controller
 
             $bills = $bills->whereHas('billDetails', function ($q) use ($request) {
                 $q->where('product_id', $request->product_id);
-                
+
                 if($request->delivery_status=='no'){
                $q->withTrashed()->where('delivery_status', 'no');
                 }
@@ -102,8 +104,7 @@ class ReportController extends Controller
 
         return view('dashboard.reports.show', compact('bills'));
     }
-    
-    
+
         function generate_pdf(Request $request)
     {
         if(!$request->printer){
@@ -120,5 +121,5 @@ class ReportController extends Controller
 
         // return redirect()->back();
     }
-    
+
 }

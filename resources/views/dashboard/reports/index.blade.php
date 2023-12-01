@@ -54,9 +54,9 @@
                         <label style="float: right;"> المستخدم:</label>
                         <select name="created_by" class="form-control ">
                             <option value="">اختار</option>
-                            
+
                             @if($users->count())
-                                @foreach($users as $user)
+                                @foreach($allUsers as $user)
                                     <option
                                         value="{{$user->id}}" {{Request()->created_by==$user->id?'selected':null}}>{{$user->name}}</option>
                                 @endforeach
