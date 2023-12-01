@@ -40,6 +40,28 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
+            <form action="{{route('dashboard.deliveries.index')}}" method="get">
+                <div class="row mt-3">
+                    <div class="col-lg-6 mt-3">
+                        <label style="float: right;">التاريخ من:</label>
+                        <input type="date"
+                               name="date_from"
+                               id="date_from"
+                               value="{{Request()->date_from}}"
+                               class="form-control created_at"
+                               placeholder="من فضلك ادخل التاريخ من">
+                    </div>
+                    <div class="col-lg-6 mt-3">
+                        <label style="float: right;">التاريخ الي:</label>
+                        <input type="date"
+                               name="date_to"
+                               id="date_to"
+                               value="{{Request()->date_to}}"
+                               class="form-control updated_at"
+                               placeholder="من فضلك ادخل التاريخ الي">
+                    </div>
+                </div>
+            </form>
             <div class="row mt-1">
                 <div class="col-md-3 mt-1">
                     <label style="float: right;">اسم العميل:
@@ -183,6 +205,8 @@
                     d.delivery_now_status = $('#delivery_now_status').val();
                     d.price_after = $('#price_after').val();
                     d.delivery_status_type = $('#delivery_status_type').val();
+                    d.date_from = $('#date_from').val();
+                    d.date_to = $('#date_to').val();
                 }
 
             },
@@ -230,6 +254,12 @@
         $('#delivery_status_type').on('keyup change', function () {
             $('#kt_datatable').DataTable().draw(true);
         });
+
+        $('#date_to').on('change', function () {
+            $('#kt_datatable').DataTable().draw(true);
+        });
+
+
 
         $('.deliveryStatus').on('change', function () {
             $.post($(this).data('url'), {delivery_status: $(this).val()}, function (data, status) {

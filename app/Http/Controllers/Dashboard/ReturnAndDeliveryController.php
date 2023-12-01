@@ -22,7 +22,7 @@ class ReturnAndDeliveryController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('read_delivery');
 
@@ -36,6 +36,10 @@ class ReturnAndDeliveryController extends Controller
             }])->where('deleted_type', '!=', 'cancel')->get();
 
         }
+        if ($request->date_from || $request->date_to) {
+            $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
+
 
         return view('dashboard.returnBills.index', compact('bills'));
     }
@@ -70,6 +74,7 @@ class ReturnAndDeliveryController extends Controller
                     $q->where('name', 'like', '%' . $request->search['value'] . '%');
                 });
         }
+
         return $dataTables->eloquent($model)->addIndexColumn()
             ->editColumn('id', function (Bill $bill) {
                 return $bill->id ?? '-';
@@ -202,6 +207,9 @@ class ReturnAndDeliveryController extends Controller
                         });
                     }
                 }
+                if ($request->date_to) {
+                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+                }
 
             })->make(true);
     }
@@ -211,6 +219,9 @@ class ReturnAndDeliveryController extends Controller
     {
         $this->authorize('update_delivery');
 
+        if (auth()->user()->cannot('update', $delivery)) {
+            abort(403);
+        }
         $products = Product::all();
 
         $companies = Company::all();
