@@ -69,31 +69,29 @@
                         <th>#</th>
                         <th>الاسم</th>
                         <th>الكمية</th>
-                        <th>سعر الجملة</th>
-                        <th>السعر</th>
+                        <th>اسم الصارف</th>
                         <th>تاريخ الإنشاء </th>
                         <th>الاحداث</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($products as $product)
-                        <tr id="row-{{ $product->id }}">
-                            <td>{{$product->id??'-'}}</td>
-                            <td>{{$product->name??'-'}}</td>
-                            <td>{{$product->qties()->sum('qty')??'-'}}</td>
-                            <td>{{$product->wholesale_price??'-'}}</td>
-                            <td>{{$product->price??'-'}}</td>
-                            <td>{{ $product->created_at ?? '-' }}</td>
+                    @foreach($expenses as $expense)
+                        <tr id="row-{{ $expense->id }}">
+                            <td>{{$expense->id??'-'}}</td>
+                            <td>{{$expense->title??'-'}}</td>
+                            <td>{{$expense->amount??'-'}}</td>
+                            <td>{{$expense->created_by??'-'}}</td>
+                            <td>{{ $expense->created_at ?? '-' }}</td>
                             <td>
                                 @can('update_product')
-                                    <a href="{{route('dashboard.products.edit', ['product' => $product->id])}}"
+                                    <a href="{{route('dashboard.expenses.edit', ['expense' => $expense->id])}}"
                                        class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                         <i class="la la-edit"></i>
                                     </a>
                                 @endcan
                                 @can('delete_product')
-                                    <a data-url="{{ route('dashboard.products.destroy',['product' => $product->id]) }}"
-                                       data-item-id="{{ $product->id }}"
+                                    <a data-url="{{ route('dashboard.expenses.destroy',['expense' => $expense->id]) }}"
+                                       data-item-id="{{ $expense->id }}"
                                        class="btn btn-sm btn-clean btn-icon btn-icon-md delete-button"
                                        data-toggle="modal"
                                        data-target="#delete_modal">

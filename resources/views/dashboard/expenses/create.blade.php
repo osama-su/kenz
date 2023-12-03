@@ -68,100 +68,41 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label style="float: right;">الاسم:
+                                <label style="float: right;">اسم المصروف:
                                     <span class="text-danger">*</span></label>
-                                <input name="name"
-                                       value="{{old("name")}}"
-                                       class="form-control {{ $errors->has("name") ? 'is-invalid' : '' }}"
+                                <input name="title"
+                                       value="{{old("title")}}"
+                                       class="form-control {{ $errors->has("title") ? 'is-invalid' : '' }}"
                                        placeholder="من فضلك ادخل الاسم"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("name") ? $errors->first("name") : null }}
+                                        {{ $errors->has("title") ? $errors->first("title") : null }}
                                     </span>
                             </div>
                             <div class="col-md-6">
                                 <label style="float: right;"> الكمية :
                                     <span class="text-danger">*</span></label>
-                                <input name="qty" type="number"
-                                       value="{{ old("qty") }}"
-                                       class="form-control {{ $errors->has("qty") ? 'is-invalid' : '' }}"
+                                <input name="amount" type="number"
+                                       value="{{ old("amount") }}"
+                                       class="form-control {{ $errors->has("amount") ? 'is-invalid' : '' }}"
                                        placeholder="من فضلك الكمية"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("qty") ? $errors->first("qty") : null }}
+                                        {{ $errors->has("amount") ? $errors->first("amount") : null }}
                                     </span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label style="float: right;">الحجم :
+                                <label style="float: right;">اسم الصارف:
                                     <span class="text-danger">*</span></label>
-                                <input name="size"
-                                       type="text"
-                                       value="{{old('size')}}"
-                                       data-role="tagsinput"
-                                       class="form-control {{ $errors->has("size") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الحجم"/>
+                                <input name="created_by"
+                                       value="{{old("created_by")}}"
+                                       class="form-control {{ $errors->has("created_by") ? 'is-invalid' : '' }}"
+                                       placeholder="من فضلك ادخل الاسم"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("size") ? $errors->first("size") : null }}
-                                    </span>
-                            </div>
-                            <div class="col-md-6">
-                                <label style="float: right;">الموديل:
-                                    <span class="text-danger">*</span></label>
-                                <input name="model" type="text"
-                                       data-role="tagsinput"
-                                       value="{{ old("model") }}"
-                                       class="form-control {{ $errors->has("model") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الموديل"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("model") ? $errors->first("model") : null }}
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label style="float: right;"> اللون:
-                                    <span class="text-danger">*</span></label>
-                                <input name="color"
-                                       type="text"
-                                       value="{{old('color')}}"
-                                       class="form-control {{ $errors->has("color") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل اللون"
-                                       data-role="tagsinput"
-                                />
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("color") ? $errors->first("color") : null }}
-                                    </span>
-                            </div>
-                            <div class="col-md-6">
-                                <label style="float: right;"> سعر الجملة :
-                                    <span class="text-danger">*</span></label>
-                                <input name="wholesale_price" type="number"
-                                       value="{{old("wholesale_price") }}"
-                                       class="form-control {{ $errors->has("wholesale_price") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل سعر الجملة"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("wholesale_price") ? $errors->first("wholesale_price") : null }}
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label style="float: right;"> السعر :
-                                    <span class="text-danger">*</span></label>
-                                <input name="price"
-                                       type="number"
-                                       value="{{old('price')}}"
-                                       class="form-control {{ $errors->has("price") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل  السعر"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("mobile") ? $errors->first("mobile") : null }}
+                                        {{ $errors->has("created_by") ? $errors->first("created_by") : null }}
                                     </span>
                             </div>
                             <div class="col-md-6">
@@ -177,6 +118,7 @@
                                     </span>
                             </div>
                         </div>
+
                     </div>
                     <div class="card-footer">
                         {!! csrf_field() !!}

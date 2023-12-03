@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\StoreExpensesRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Expenses;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -29,32 +31,32 @@ class ExpensesController extends Controller
         $this->authorize('read_product');
 
 
-        $products = Product::where('type', 'expense')
-            ->orderBy('created_at', 'desc');
+        $expenses = Expenses::query();
 
         if ($request->date_from || $request->date_to) {
-            $products = $products->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $expenses = $expenses->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
 
-        $products = $products->get();
+        $expenses = $expenses->get();
 
-        return view('dashboard.expenses.index', compact('products'));
+        return view('dashboard.expenses.index', compact('expenses'));
     }
 
     /**
-     * @param CreateProductRequest $request
+     * @param StoreExpensesRequest $request
      * @return RedirectResponse
      */
-    public function store(CreateProductRequest $request): RedirectResponse
+    public function store(StoreExpensesRequest $request): RedirectResponse
     {
 
         $data = $request->all();
-        $data['type'] = 'expense';
-        $product = Product::create($data);
 
-        if ($request->qty) {
-            $product->qties()->create(['qty' => $request->qty]);
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->image->store('uploads', 'public');
         }
+
+        Expenses::create($data);
+
         return redirect()->route('dashboard.expenses.index')->with(['status' => 'success', 'message' => 'تم الحفظ بنجاج']);
 
     }
