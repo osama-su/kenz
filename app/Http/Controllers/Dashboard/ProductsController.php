@@ -37,7 +37,20 @@ class ProductsController extends Controller
 
         $products = $products->get();
 
-        return view('dashboard.products.index', compact('products'));
+        $productsَQty = 0;
+        foreach ($products as $product) {
+            $productsَQty += $product->qties->sum('qty');
+        }
+        $totalCost = 0;
+        foreach ($products as $product) {
+            $totalCost += $product->qties->sum('qty') * $product->wholesale_price;
+        }
+        $totalValue = 0;
+        foreach ($products as $product) {
+            $totalValue += $product->qties->sum('qty') * $product->price;
+        }
+
+        return view('dashboard.products.index', compact('products', 'productsَQty', 'totalCost', 'totalValue'));
     }
 
 
@@ -58,9 +71,8 @@ class ProductsController extends Controller
      */
     public function store(CreateProductRequest $request): RedirectResponse
     {
-        
         $product = Product::create($request->all());
-        
+
  if($request->qty){
          $product->qties()->create(['qty'=>$request->qty]);
          }
@@ -86,10 +98,10 @@ class ProductsController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
-      
+
         $product->update($request->all());
 
-       
+
         return redirect()->route('dashboard.products.index')->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
 
     }

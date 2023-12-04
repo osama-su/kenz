@@ -55,7 +55,7 @@
     </ul>
 @endsection
 @section('content')
- 
+
         <div class="row">
                <form action="{{route('dashboard.products.update',['product'=>$product->id])}}" method="post"
           enctype="multipart/form-data">
@@ -189,6 +189,21 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label style="float: right;"> العمولة :
+                                    <span class="text-danger">*</span></label>
+                                <input name="commission"
+                                       type="number"
+                                       value="{{$product->commission??old("commission") }}"
+                                       class="form-control {{ $errors->has("commission") ? 'is-invalid' : '' }}"
+                                       placeholder="من فضلك ادخل العمولة"/>
+                                <span
+                                    class="form-text text-danger" style="float: right;">
+                                        {{ $errors->has("commission") ? $errors->first("commission") : null }}
+                                    </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         {!! method_field('PUT') !!}
@@ -202,7 +217,7 @@
             </div>
                 </form>
 
-            
+
                         <div class="col-md-12">
             <div class="card card-custom gutter-b example example-compact card-body">
                                <form class=""
@@ -231,7 +246,7 @@
                         </div>
                         {!! csrf_field() !!}
                     <div class="card-footer">
-        
+
                         <button type="submit" class="btn btn-primary mr-2">حفظ</button>
                         <button type="reset" class="btn btn-secondary">الغاء</button>
                     </div>
@@ -269,7 +284,7 @@
                 </table>
 
             </div>
-          
+
         </div>
         </div>
 
@@ -288,7 +303,7 @@
     <!--begin::Page Scripts(used by this page)-->
     <script>
         $(document).ready(function () {
-          
+
             var table = $('#kt_datatable1').DataTable({
                 responsive: true,
                 // Pagination settings
@@ -325,7 +340,7 @@
                     }
                 }
             });
-            
+
               $('#kt_datatable1 thead tr').clone(true).appendTo('#kt_datatable1 thead');
             $('#kt_datatable1 thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();

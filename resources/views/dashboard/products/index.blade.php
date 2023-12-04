@@ -34,8 +34,75 @@
 												</svg>
                                                 <!--end::Svg Icon-->
 											</span>اضافة جديد </a>
-            @endcan
-            <!--end::Button-->
+                @endcan
+                <!--end::Button-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4">
+                <!--begin::Stats Widget 7-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                            <div class="d-flex flex-column mr-2">
+                                <a href="{{route('dashboard.users.index')}}"
+                                   class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">المنتجات</a>
+                                <span class="text-muted font-weight-bold mt-2">اجمالي عدد المنتجات</span>
+                            </div>
+                            <span class="symbol symbol-light-success symbol-45">
+                                <span
+                                    class="symbol-label font-weight-bolder font-size-h6">{{$productsَQty}}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Stats Widget 7-->
+            </div>
+            <div class="col-xl-4">
+                <!--begin::Stats Widget 8-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer">
+                            <div class="d-flex flex-column mr-2">
+                                <a href="{{route('dashboard.products.index')}}"
+                                   class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">التكلفة</a>
+                                <span class="text-muted font-weight-bold mt-2">إجمالي تكلفة المنتجات </span>
+                            </div>
+                            <span class="symbol symbol-light-danger symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalCost}}</span>
+													</span>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Stats Widget 8-->
+            </div>
+            <div class="col-xl-4">
+                <!--begin::Stats Widget 9-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer">
+                            <div class="d-flex flex-column mr-2">
+                                <a href="{{route('dashboard.bills.index')}}"
+                                   class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">القيمة</a>
+                                <span class="text-muted font-weight-bold mt-2">إجمالي قيمة المنتجات </span>
+                            </div>
+                            <span class="symbol symbol-light-primary symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalValue}}</span>
+													</span>
+                        </div>
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Stats Widget 9-->
             </div>
         </div>
 
@@ -71,7 +138,8 @@
                         <th>الكمية</th>
                         <th>سعر الجملة</th>
                         <th>السعر</th>
-                        <th>تاريخ الإنشاء </th>
+                        <th>الربح</th>
+                        <th>تاريخ الإنشاء</th>
                         <th>الاحداث</th>
                     </tr>
                     </thead>
@@ -83,6 +151,7 @@
                             <td>{{$product->qties()->sum('qty')??'-'}}</td>
                             <td>{{$product->wholesale_price??'-'}}</td>
                             <td>{{$product->price??'-'}}</td>
+                            <td>{{$product->price - $product->wholesale_price }}</td>
                             <td>{{ $product->created_at ?? '-' }}</td>
                             <td>
                                 @can('update_product')
@@ -114,6 +183,7 @@
     @include('dashboard.includes.delete-modal',['action_message' => 'هذا المنتج'])
 @endsection
 @section('scripts')
+
     <script src="{{ asset('assets/js/delete-item.js') }}" type="text/javascript"></script>
 
     <!--begin::Page Vendors(used by this page)-->
@@ -122,7 +192,7 @@
     <!--begin::Page Scripts(used by this page)-->
     <script>
         $(document).ready(function () {
-          
+
             var table = $('#kt_datatable1').DataTable({
                 responsive: true,
                 // Pagination settings
@@ -159,8 +229,8 @@
                     }
                 }
             });
-            
-              $('#kt_datatable1 thead tr').clone(true).appendTo('#kt_datatable1 thead');
+
+            $('#kt_datatable1 thead tr').clone(true).appendTo('#kt_datatable1 thead');
             $('#kt_datatable1 thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
                 $(this).html('<input type="text" class="col-md-6" />');
@@ -178,4 +248,6 @@
 
     </script>
     <!--end::Page Scripts-->
+
+
 @endsection

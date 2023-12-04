@@ -177,6 +177,21 @@
                                     </span>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label style="float: right;"> العمولة :
+                                    <span class="text-danger">*</span></label>
+                                <input name="commission"
+                                       type="number"
+                                       value="{{old('commission')}}"
+                                       class="form-control {{ $errors->has("commission") ? 'is-invalid' : '' }}"
+                                       placeholder="من فضلك ادخل العمولة"/>
+                                <span
+                                    class="form-text text-danger" style="float: right;">
+                                        {{ $errors->has("commission") ? $errors->first("commission") : null }}
+                                    </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         {!! csrf_field() !!}

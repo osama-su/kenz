@@ -27,6 +27,7 @@ class Product extends Model
         'wholesale_price',
         'price',
         'type',
+        'commission',
     ];
 
 public function inventory()
