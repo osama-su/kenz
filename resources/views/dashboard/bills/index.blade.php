@@ -163,9 +163,9 @@
                     <table class="table table-separate table-head-custom table-checkable responsive" id="kt_datatable">
                         <thead>
                         <tr>
-                            @can('print_bill')
-                                <th>اختار</th>
-                            @endcan
+                            {{--                            @can('print_bill')--}}
+                            <th>اختار</th>
+                            {{--                            @endcan--}}
                             <th>#</th>
                             <th>اسم العميل</th>
                             <th>المحافظة</th>
@@ -174,12 +174,16 @@
                             <th>اسم المورد</th>
                             <th>اسم المنتج</th>
                             <th>الكمية</th>
+                            <th>السعر</th>
+                            <th>الشحن</th>
                             <th>اجمالي السعر</th>
+                            <th>الربح</th>
                             <th>حالة الطبع</th>
                             <th>تاريخ الإنشاء</th>
-                            @can('update_delivery')
-                                <th>حالة التسليم الكلي</th>
-                            @endcan
+                            {{--                            @can('update_delivery')--}}
+                            <th>حالة التسليم الكلي</th>
+                            {{--                            @endcan--}}
+                            <th>حاله التسليم</th>
                             <th>الاحداث</th>
                         </tr>
                         </thead>
@@ -196,16 +200,32 @@
                 </form>
                 @can('print_bill')
 
-                    <a class="btn btn-primary col-md-12 mt-5 company-button"
-                       data-toggle="modal"
-                       data-target="#company_modal">
-                        اطبع المحدد
-                    </a>
-                    <a class="btn btn-primary col-md-12 mt-5 all_company-button"
-                       data-toggle="modal"
-                       data-target="#all_company_modal">
-                        اطبع الكل
-                    </a>
+                    <div class="row d-flex justify-content-between">
+                        <a class="btn btn-primary col-md-5 mt-5 company-button"
+                           data-toggle="modal"
+                           data-target="#company_modal">
+                            اطبع المحدد
+                        </a>
+                        <a class="btn btn-primary col-md-5 mt-5 company-button"
+                           data-toggle="modal"
+                           data-target="#company_modal">
+                            تحميل شيت المحدد
+                        </a>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+
+                        <a class="btn btn-primary col-md-5 mt-5 all_company-button"
+                           data-toggle="modal"
+                           data-target="#all_company_modal">
+                            اطبع الكل
+                        </a>
+
+                        <a class="btn btn-primary col-md-5 mt-5 all_company-button"
+                           data-toggle="modal"
+                           data-target="#all_company_modal">
+                            تحميل شيت الكل
+                        </a>
+                    </div>
                 @endcan
             </div>
             <!--end: Datatable-->
@@ -224,7 +244,7 @@
         // begin first table
 
         var array = [
-            // {data: 'select', name: 'select', defaultContent: '-'},
+            {data: 'select', name: 'select', defaultContent: '-'},
             {data: 'id', name: 'id', defaultContent: '-'},
             {data: 'name', name: 'name', defaultContent: '-'},
             {data: 'gov', name: 'gov', defaultContent: '-'},
@@ -233,7 +253,10 @@
             {data: 'supplier', name: 'supplier', defaultContent: '-'},
             {data: 'product_name', name: 'product_name', defaultContent: '-'},
             {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
+            {data: 'price', name: 'price', defaultContent: '-'},
+            {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            {data: 'profit', name: 'profit', defaultContent: '-'},
             {data: 'print_status', name: 'print_status', defaultContent: '-'},
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
@@ -252,10 +275,14 @@
             {data: 'supplier', name: 'supplier', defaultContent: '-'},
             {data: 'product_name', name: 'product_name', defaultContent: '-'},
             {data: 'product_qty', name: 'product_qty', defaultContent: '-'},
+            {data: 'price', name: 'price', defaultContent: '-'},
+            {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            {data: 'profit', name: 'profit', defaultContent: '-'},
             {data: 'print_status', name: 'print_status', defaultContent: '-'},
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
+            {data: 'delivery_status', name: 'delivery_status', defaultContent: '-'},
             {data: 'action', orderable: false, searchable: false, className: 'text-center'},
 
         ];
@@ -293,7 +320,17 @@
             dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
                       <'row'<'col-sm-12'tr>>
                       <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
-            buttons: ['print', 'copyHtml5', 'excel', 'csvHtml5', 'pdfHtml5',],
+            buttons: [
+                {
+                    extend: 'excel',
+                    title: 'الفواتير',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16]
+
+                    }
+                },
+                'print',
+                'copyHtml5', 'csvHtml5', 'pdfHtml5',],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             order: [[0, "desc"]],
             ajax: {
@@ -308,7 +345,6 @@
                     d.delivery_now_status = $('#delivery_now_status').val();
                     d.price_after = $('#price_after').val();
                 }
-
             },
             columns: array, createdRow: function (row, data, index) {
                 $(row).attr('id', 'row-' + data['id']);
@@ -348,6 +384,5 @@
         // });
     </script>
 
-    </script>
     <!--end::Page Scripts-->
 @endsection

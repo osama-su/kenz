@@ -82,12 +82,12 @@ class BillsController extends Controller
 
         $bills = $bills->get();
 
+
         return view('dashboard.bills.index', compact('bills', 'users', 'suppliers', 'products'));
     }
 
     public function show(DataTables $dataTables, Request $request)
     {
-
 
         $model = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
 
@@ -188,11 +188,31 @@ class BillsController extends Controller
                 })
                     ->implode('<br>');
             })
+            ->addColumn('price', function (Bill $bill) {
+                return $bill->price;
+            })
+            ->addColumn('delivery_fee', function (Bill $bill) {
+                return $bill->delivery_fee;
+            })
             ->editColumn('price_after', function (Bill $bill) {
                 return $bill->price_after;
             })
+            ->addColumn('profit', function (Bill $bill) {
+                // bill's products cost
+                $cost = $bill->billDetails->map(function ($billDetails) {
+                    return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
+                })->sum();
+                return $bill->price_after - $cost - $bill->delivery_fee;
+            })
             ->addColumn('print_status', function (Bill $bill) {
                 if ($bill->print == 'yes') {
+                    return 'نعم';
+                } else {
+                    return 'لا';
+                }
+            })
+            ->addColumn('delivery_status', function (Bill $bill) {
+                if ($bill->delivery_status == 'yes') {
                     return 'نعم';
                 } else {
                     return 'لا';
@@ -556,6 +576,19 @@ class BillsController extends Controller
         }
 
         $bills = Bill::withTrashed()->whereIn('id', $request->printer)->get();
+
+        $bill = $bills->first();
+//        dd($bills->first()->company->id, $request->all());
+
+//        if ($bills->first()->company->id != $request->company_id) {
+//            if ($bill->company) {
+//                if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'return')->count() == 0) {
+//                    if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'done')->count() == 0) {
+//                        $bill->company->wallet()->create(['bill_id' => $bill->id, 'amount' => ($bill->price - $bill->discount_percentage), 'type' => 'return']);
+//                    }
+//                }
+//            }
+//        }
 
 
         $pdf = \PDF::loadView('dashboard.bills.pdf', $bills->first());
