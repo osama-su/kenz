@@ -131,29 +131,29 @@
                     </div>
                     <!--end::Form-->
                 </div>
-                <div class="card card-custom gutter-b example example-compact">
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label style="float: right;">المندوب:
-                                    <span class="text-danger">*</span></label>
-                                <select name="company_id"
-                                        class="form-control company_id {{ $errors->has("company_id") ? 'is-invalid' : '' }}">
-                                    <option value="">اختار</option>
-                                    @if($companies->count())
-                                        @foreach($companies as $company)
-                                            <option value="{{$company->id}}">{{$company->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("company_id") ? $errors->first("company_id") : null }}
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="card card-custom gutter-b example example-compact">--}}
+{{--                    <div class="card-body">--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <div class="col-md-12">--}}
+{{--                                <label style="float: right;">المندوب:--}}
+{{--                                    <span class="text-danger">*</span></label>--}}
+{{--                                <select name="company_id"--}}
+{{--                                        class="form-control company_id {{ $errors->has("company_id") ? 'is-invalid' : '' }}">--}}
+{{--                                    <option value="">اختار</option>--}}
+{{--                                    @if($companies->count())--}}
+{{--                                        @foreach($companies as $company)--}}
+{{--                                            <option value="{{$company->id}}">{{$company->name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+{{--                                </select>--}}
+{{--                                <span--}}
+{{--                                    class="form-text text-danger" style="float: right;">--}}
+{{--                                        {{ $errors->has("company_id") ? $errors->first("company_id") : null }}--}}
+{{--                                    </span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="card card-custom gutter-b example example-compact">
                     <div class="card-body">
                         <div class="form-group row">
