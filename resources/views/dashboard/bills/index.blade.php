@@ -177,7 +177,9 @@
                             <th>السعر</th>
                             <th>الشحن</th>
                             <th>اجمالي السعر</th>
-                            <th>الربح</th>
+                                                            @if(auth()->user()->role_id == 1)
+                                                                <th>الربح</th>
+                                                            @endif
                             <th>حالة الطبع</th>
                             <th>تاريخ الإنشاء</th>
                                                         @can('update_delivery')
@@ -243,7 +245,9 @@
             {data: 'price', name: 'price', defaultContent: '-'},
             {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            @if(auth()->user()->role_id == 1)
             {data: 'profit', name: 'profit', defaultContent: '-'},
+            @endif
             {data: 'print_status', name: 'print_status', defaultContent: '-'},
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
@@ -265,7 +269,9 @@
             {data: 'price', name: 'price', defaultContent: '-'},
             {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
+            @if(auth()->user()->role_id == 1)
             {data: 'profit', name: 'profit', defaultContent: '-'},
+            @endif
             {data: 'print_status', name: 'print_status', defaultContent: '-'},
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
