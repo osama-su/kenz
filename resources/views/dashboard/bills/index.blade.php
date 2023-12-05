@@ -163,9 +163,9 @@
                     <table class="table table-separate table-head-custom table-checkable responsive" id="kt_datatable">
                         <thead>
                         <tr>
-                            {{--                            @can('print_bill')--}}
+                                                        @can('print_bill')
                             <th>اختار</th>
-                            {{--                            @endcan--}}
+                                                        @endcan
                             <th>#</th>
                             <th>اسم العميل</th>
                             <th>المحافظة</th>
@@ -180,9 +180,9 @@
                             <th>الربح</th>
                             <th>حالة الطبع</th>
                             <th>تاريخ الإنشاء</th>
-                            {{--                            @can('update_delivery')--}}
+                                                        @can('update_delivery')
                             <th>حالة التسليم الكلي</th>
-                            {{--                            @endcan--}}
+                                                        @endcan
                             <th>حاله التسليم</th>
                             <th>الاحداث</th>
                         </tr>
@@ -231,7 +231,7 @@
         // begin first table
 
         var array = [
-            {data: 'select', name: 'select', defaultContent: '-'},
+            // {data: 'select', name: 'select', defaultContent: '-'},
             {data: 'id', name: 'id', defaultContent: '-'},
             {data: 'name', name: 'name', defaultContent: '-'},
             {data: 'gov', name: 'gov', defaultContent: '-'},
