@@ -80,7 +80,7 @@
                                     </span>
                             </div>
                             <div class="col-md-6">
-                                <label style="float: right;"> الكمية :
+                                <label style="float: right;"> القيمة :
                                     <span class="text-danger">*</span></label>
                                 <input name="amount" type="number"
                                        value="{{ old("amount") }}"
