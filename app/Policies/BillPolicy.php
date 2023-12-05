@@ -61,13 +61,13 @@ class BillPolicy
 //        } else {
 //            return false;
 //        }
-        if ($user->role->permissions->contains('name', 'update_own_bill')){
-            return $user->id === $bill->user_id;
-            } elseif($user->role->permissions->contains('name', 'update_bill')){
-                return true;
-                } else {
-            return false;
-                }
+//        if ($user->role->permissions->contains('name', 'update_own_bill')){
+//            return $user->id === $bill->user_id;
+//            } elseif($user->role->permissions->contains('name', 'update_bill')){
+//                return true;
+//                } else {
+//            return false;
+//                }
     }
 
     /**

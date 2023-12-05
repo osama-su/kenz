@@ -219,9 +219,9 @@ class ReturnAndDeliveryController extends Controller
     {
         $this->authorize('update_delivery');
 
-        if (auth()->user()->cannot('update', $delivery)) {
-            abort(403);
-        }
+//        if (auth()->user()->cannot('update', $delivery)) {
+//            abort(403);
+//        }
         $products = Product::all();
 
         $companies = Company::all();
