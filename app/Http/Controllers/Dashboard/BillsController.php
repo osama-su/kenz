@@ -39,8 +39,8 @@ class BillsController extends Controller
     {
         $this->authorize('read_bill');
 
-        $bills = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
-
+//        $bills = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
+        $bills = Bill::query();
         $users = User::where('role_id','!=','2')->get();
 
         $suppliers = Supplier::all();
@@ -89,8 +89,8 @@ class BillsController extends Controller
     public function show(DataTables $dataTables, Request $request)
     {
 
-        $model = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
-
+//        $model = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
+        $model = Bill::query();
         if (Auth::user()->role_id == '1') {
             $model = Bill::orderBy('created_at', 'desc');
         }
