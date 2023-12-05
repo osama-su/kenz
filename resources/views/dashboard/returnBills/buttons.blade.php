@@ -1,7 +1,8 @@
 <td>
     @can('update_delivery')
         @if($bill->deleted_at==null)
-            @if($bill->created_by==auth()->user()->id)
+            @if(
+                auth()->user()->role_id == '1' || $bill->created_by==auth()->user()->id)
             <a href="{{route('dashboard.deliveries.edit', ['delivery' => $bill->id])}}"
                class="btn btn-sm btn-clean btn-icon btn-icon-md">
                 <i class="la la-edit"></i>
@@ -11,7 +12,8 @@
     @endcan
     @can('delete_delivery')
         @if($bill->deleted_at==null)
-                @if($bill->created_by==auth()->user()->id)
+                @if(
+    auth()->user()->role_id == '1' || $bill->created_by==auth()->user()->id)
                 <a data-url="{{ route('dashboard.deliveries.destroy',['delivery' => $bill->id]) }}"
                data-item-id="{{ $bill->id }}"
                class="btn btn-sm btn-clean btn-icon btn-icon-md delete-button" data-toggle="modal"
