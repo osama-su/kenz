@@ -41,7 +41,7 @@ class BillsController extends Controller
 
         $bills = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
 
-        $users = User::where('role_id', '1')->get();
+        $users = User::where('role_id','!=','2')->get();
 
         $suppliers = Supplier::all();
 
