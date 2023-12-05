@@ -59,20 +59,24 @@
                             <th>رقم هاتف المندوب</th>
                             <th>اسم المنتج</th>
                             <th>الكمية</th>
+                            <th> السعر</th>
+                            <th>الشحن</th>
                             <th>اجمالي السعر</th>
+                            <th>الربح</th>
                             <th>حالة الطبع</th>
                             <th>تاريخ الانشاء</th>
+                            <th>حاله التسليم</th>
                             <th>الاحداث</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($bills as $bill)
                             <tr id="row-{{ $bill->id }}" class="
-                            
+
                             @if($bill->billDetails->count())
                             @foreach($bill->billDetails as $billDetail)
                             @if($billDetail->deleted_at!=null)
-                             table-danger 
+                             table-danger
                             @endif
                             @endforeach
                             @endif
@@ -107,6 +111,13 @@
                                     @endif
                                 </td>
                                 <td>{{$bill->price??'-'}}</td>
+                                <td>{{$bill->delivery_fee??'-'}}</td>
+                                <td>{{$bill->price_after??'-'}}</td>
+                                <td>{{
+    $bill->price_after-$bill->billDetails->map(function ($billDetails) {
+                    return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
+                })->sum()-$bill->delivery_fee
+    }}</td>
                                 <td>@if($bill->print=='yes')
                                         نعم
                                     @else
@@ -114,6 +125,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $bill->created_at ?? '-' }}</td>
+                                <td>{{ $bill->delivery_status == 'yes' ? 'نعم' : 'لا' }}</td>
                                 <td>
                                     @can('update_bill')
                                         <a href="{{route('dashboard.bills.edit', ['bill' => $bill->id])}}"
@@ -175,10 +187,24 @@
                 dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
                 buttons: [
+                    {
+                        extend: 'excel',
+                        title: 'الفواتير',
+                        exportOptions: {
+                            modifiers: {
+                                selected: true
+                            },
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+
+                        }
+                    },
                     'print',
                     'copyHtml5',
-                    'excelHtml5',
                     'csvHtml5',
                     'pdfHtml5',
                 ], language: {

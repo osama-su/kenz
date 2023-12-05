@@ -202,10 +202,24 @@
                 dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
                 buttons: [
+                    {
+                        extend: 'excel',
+                        title: 'الفواتير',
+                        exportOptions: {
+                            modifiers: {
+                                selected: true
+                            },
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16]
+
+                        }
+                    },
                     'print',
                     'copyHtml5',
-                    'excelHtml5',
                     'csvHtml5',
                     'pdfHtml5',
                 ], language: {
