@@ -32,7 +32,7 @@ class ReportController extends Controller
 
         $users_m = User::where('role_id', '!=', '1')->get();
 
-        $allUsers = User::all();
+        $allUsers = User::where('role_id', '!=', '2')->get();
 
         return view('dashboard.reports.index', compact('allUsers','users_m', 'suppliers','users', 'products', 'companies'));
     }
