@@ -27,9 +27,7 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
-        $users = User::whereHas('role', function ($q) {
-            $q->where('name', 'user');
-        })->count();
+        $users = User::whereHas('role')->count();
 
         $products = Product::count();
 
