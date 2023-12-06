@@ -163,9 +163,9 @@
                     <table class="table table-separate table-head-custom table-checkable responsive" id="kt_datatable">
                         <thead>
                         <tr>
-                                                        @can('print_bill')
-                            <th>اختار</th>
-                                                        @endcan
+                            @can('print_bill')
+                                <th>اختار</th>
+                            @endcan
                             <th>#</th>
                             <th>اسم العميل</th>
                             <th>المحافظة</th>
@@ -177,14 +177,14 @@
                             <th>السعر</th>
                             <th>الشحن</th>
                             <th>اجمالي السعر</th>
-                                                            @if(auth()->user()->role_id == 1)
-                                                                <th>الربح</th>
-                                                            @endif
+                            @if(auth()->user()->role_id == 1)
+                                <th>الربح</th>
+                            @endif
                             <th>حالة الطبع</th>
                             <th>تاريخ الإنشاء</th>
-                                                        @can('update_delivery')
-                            <th>حالة التسليم الكلي</th>
-                                                        @endcan
+                            @can('update_delivery')
+                                <th>حالة التسليم الكلي</th>
+                            @endcan
                             <th>حاله التسليم</th>
                             <th>الاحداث</th>
                         </tr>
@@ -245,10 +245,14 @@
             {data: 'price', name: 'price', defaultContent: '-'},
             {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
-            @if(auth()->user()->role_id == 1)
-            {data: 'profit', name: 'profit', defaultContent: '-'},
-            @endif
-            {data: 'print_status', name: 'print_status', defaultContent: '-'},
+                @if(auth()->user()->role_id == 1)
+            {
+                data: 'profit', name: 'profit', defaultContent: '-'
+            },
+                @endif
+            {
+                data: 'print_status', name: 'print_status', defaultContent: '-'
+            },
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
             {data: 'action', orderable: false, searchable: false, className: 'text-center'},
@@ -269,10 +273,14 @@
             {data: 'price', name: 'price', defaultContent: '-'},
             {data: 'delivery_fee', name: 'delivery_fee', defaultContent: '-'},
             {data: 'price_after', name: 'price_after', defaultContent: '-'},
-            @if(auth()->user()->role_id == 1)
-            {data: 'profit', name: 'profit', defaultContent: '-'},
-            @endif
-            {data: 'print_status', name: 'print_status', defaultContent: '-'},
+                @if(auth()->user()->role_id == 1)
+            {
+                data: 'profit', name: 'profit', defaultContent: '-'
+            },
+                @endif
+            {
+                data: 'print_status', name: 'print_status', defaultContent: '-'
+            },
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
             {data: 'select_return', name: 'select_return', defaultContent: '-'},
             {data: 'delivery_status', name: 'delivery_status', defaultContent: '-'},
@@ -334,7 +342,17 @@
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             order: [[0, "desc"]],
             ajax: {
-                url: '{{ route('dashboard.bills.show',['date_from'=>Request()->date_from,'date_to'=>Request()->date_to,'supplier_id'=>Request()->supplier_id,'gov'=>Request()->gov,'product_id'=>Request()->product_id,'created_by'=>Request()->created_by,'print'=>Request()->print,]) }}',
+                url: '{{ url('bills/show') }}?date_from={{ Request()->get('date_from') }}&date_to={{ Request()->get('date_to') }}&supplier_id={{ Request()->supplier_id }}&gov={{ Request()->gov }}&product_id={{ Request()->product_id }}&created_by={{ Request()->created_by }}&print={{ Request()->print }}',
+
+                                {{--url: '{{ route('dashboard.bills.show',--}}
+{{--[--}}
+{{--    'date_from'=>Request()->get('date_from'),--}}
+{{--    'date_to'=>Request()->get('date_to'),--}}
+{{--    'supplier_id'=>Request()->supplier_id,--}}
+{{--    'gov'=>Request()->gov,--}}
+{{--    'product_id'=>Request()->product_id,--}}
+{{--    'created_by'=>Request()->created_by,--}}
+{{--    'print'=>Request()->print]) }}',--}}
                 data: function (d) {
                     d.name = $('#name').val();
                     d.gov = $('#gov').val();

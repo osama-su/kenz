@@ -88,15 +88,15 @@ class BillsController extends Controller
 
     public function show(DataTables $dataTables, Request $request)
     {
-
 //        $model = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
         $model = Bill::query();
         if (Auth::user()->role_id == '1') {
-            $model = Bill::orderBy('created_at', 'desc');
+            $model = $model->orderBy('created_at', 'desc');
         }
 
         if ($request->date_from || $request->date_to) {
             $model = $model->whereBetween('created_at', [$request->date_from, $request->date_to]);
+
         }
         if ($request->supplier_id) {
             $model = $model->where('supplier_id', $request->supplier_id);
