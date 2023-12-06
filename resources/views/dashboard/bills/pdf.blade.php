@@ -43,36 +43,6 @@ if (Request()->printer != null) {
 }
 $company = Company::where('id', Request()->company_id)->first();
 
-
-if ($bills->count())
-    foreach ($bills as $bill)
-        if (Request()->company_id != $bill->company_id) {
-            if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'return')->count() == 0) {
-                if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'done')->count() == 0) {
-                    $bill->company->wallet()->create(['bill_id' => $bill->id, 'amount' => ($bill->price - $bill->discount_percentage), 'type' => 'return']);
-                }
-            }
-            $bill->update(['company_id' => Request()->company_id]);
-            if ($bill->delivery_fee == null || $bill->delivery_fee == 0) {
-                $bill->update(['company_id' => Request()->company_id,
-                    'delivery_fee' => $company ? ($company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0) : 0]);
-            }
-
-            $price = -$bill->price;
-
-            if ($bill->discount_percentage) {
-                $price = -($bill->price - $bill->discount_percentage);
-            }
-
-            $bill->company->wallet()->create(['amount' => $price, 'bill_id' => $bill->id]);
-            $bill->refresh();
-            $bill->company->wallet()->create(['amount' => -$price, 'bill_id' => $bill->id]);
-        }
-$bill->update(['print' => 'yes', 'price_after' => ($bill->price - $bill->discount_percentage) + ($bill->delivery_fee)]);
-
-$createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? '-';
-
-
 ?>
     <!DOCTYPE html>
 <html lang="ar">
@@ -80,6 +50,23 @@ $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? 
     <meta charset="utf-8">
     <title>فاتورة</title>
     <style>
+        @media print {
+            body {
+                margin: 0;
+            }
+
+            .invoice-container {
+                height: 100vh; /* Adjust the height as needed */
+                page-break-after: always;
+                box-sizing: border-box;
+                padding: 2mm;
+            }
+
+            .invoice-container:last-of-type {
+                page-break-after: avoid;
+            }
+        }
+
         body {
             direction: rtl;
             font-family: 'examplefont', sans-serif;
@@ -158,7 +145,7 @@ $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? 
         }
 
         #invoice-POS .info {
-            display: inline;
+            display: block;
             margin-left: 0;
         }
 
@@ -191,6 +178,12 @@ $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? 
         #invoice-POS .itemtext {
             font-size: 0.5em;
         }
+
+        #invoice-POS #legalcopy {
+            margin-top: 5mm;
+        }
+
+
     </style>
 </head>
 <body>
@@ -198,11 +191,6 @@ $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? 
     @foreach($bills as $bill)
         @php
             if(Request()->company_id!=$bill->company_id){
-                if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'return')->count() == 0) {
-                if ($bill->company->wallet()->where('bill_id', $bill->id)->where('type', 'done')->count() == 0) {
-                    $bill->company->wallet()->create(['bill_id' => $bill->id, 'amount' => ($bill->price - $bill->discount_percentage), 'type' => 'return']);
-                }
-            }
              $bill->update(['company_id' => Request()->company_id]);
             if($bill->delivery_fee==null||$bill->delivery_fee==0){
               $bill->update(['company_id' => Request()->company_id,
@@ -219,128 +207,101 @@ $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? 
 
                         }
                         $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
-            $createdBy = \App\Models\User::where('id', $bill->created_by)->first()->name ?? '-';
 
 
         @endphp
-<div id="invoice-POS">
+        <div @if(! ($bills->last() == $bill))
+            class="invoice-container"
+        @endif
+        >
+            <div id="invoice-POS">
+            <center id="top">
 
-    <div id="top" style="text-align: center;">
-
-        <img
-            src="data:image/png;base64, {{ base64_encode(QrCode::encoding('UTF-8')->format('png')->margin(1)->size(100)->generate(route('dashboard.bills.return',['bill'=>$bill->id]))) }}">
-
-
-        <div class="info">
-            <h2>رقم الفاتورة :{{$bill->id??'-'}}</h2>
-            <h2>تاريخ التشاء :{{$bill->created_at??'-'}}</h2>
-        </div><!--End Info-->
-    </div><!--End InvoiceTop-->
-
-    <div id="mid">
-        <div class="info" style="display: flex; flex-direction: row; justify-content: space-between;">
-            <table>
-                <tr>
-                    <th colspan="2"><span>معلومات الفاتورة</span></th>
-                </tr>
-                <tr>
-                    <td>الاسم</td>
-                    <td>{{$bill->user->name??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>رقم الهاتف</td>
-                    <td>{{$bill->user->mobile??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>البريد الالكتروني</td>
-                    <td>{{$bill->user->email??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>المحافظة</td>
-                    <td>{{$bill->user->gov??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>العنوان</td>
-                    <td>{{$bill->user->address??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>اسم المندوب</td>
-                    <td>{{$bill->company->name??'-'}}</td>
-                </tr>
-                <tr>
-                    <td>اسم المورد</td>
-                    <td>{{ $bill->supplier->name??'-'  }}</td>
-                </tr>
-                <tr>
-                    <td>اسم البائع</td>
-                    <td>{{ $createdBy  }}</td>
-                </tr>
+                <img
+                    src="data:image/png;base64, {{ base64_encode(QrCode::encoding('UTF-8')->format('png')->margin(1)->size(100)->generate(route('dashboard.bills.return',['bill'=>$bill->id]))) }}">
 
 
-            </table>
-        </div>
-    </div><!--End Invoice Mid-->
+                <div class="info">
+                    <h2>رقم الفاتورة :{{$bill->id??'-'}}</h2>
+                    <h2>تاريخ التشاء :{{$bill->created_at??'-'}}</h2>
+                </div><!--End Info-->
+            </center><!--End InvoiceTop-->
 
-    <div id="bot">
+            <div id="mid">
+                <div class="info">
+                    <h2>معلومات الفاتورة</h2>
+                    <h6>الاسم :{{$bill->user->name??'-'}}</h6></br>
+                    <h6> رقم الهاتف :{{$bill->user->mobile??'-'}} </h6></br>
+                    <h6> البريد الالكتروني :{{$bill->user->email??'-'}} </h6></br>
+                    <h6> المحافظة: {{$bill->user->gov??'-'}}</br> </h6>
+                    <h6> العنوان: {{$bill->user->address??'-'}}</br> </h6>
+                    <h6> اسم المندوب: {{$bill->company->name??'-'}}</br> </h6>
+                    <h6> اسم المورد: {{ $bill->supplier->name??'-'  }}<br></h6>
 
-        <div id="table">
-            <table>
-                <tr class="tabletitle">
-                    <td class="item"><h5>المنتج</h5></td>
-                    <td class="Rate"><h5>الكمية</h5></td>
-                    <td class="Rate"><h5>لون</h5></td>
-                    <td class="Rate"><h5>المقاس</h5></td>
-                    <td class="Hours"><h5>السعر</h5></td>
-                </tr>
-                @if($bill->billDetails->count())
-                    @foreach($bill->billDetails as $billDetails)
-                        <tr class="service">
-                            <td class="tableitem"><p class="itemtext">{{$billDetails->product->name??'-'}}</p>
-                            </td>
-                            <td class="tableitem"><p class="itemtext">{{$billDetails->qty}}</p></td>
-                            <td class="tableitem"><p class="itemtext">{{$billDetails->color??'-'}}</p>
-                            </td>
-                            <td class="tableitem"><p class="itemtext">{{$billDetails->size??'-'}}</p>
-                            </td>
-                            <td class="tableitem"><p class="itemtext">{{$billDetails->price}} ج.م </p></td>
+                </div>
+            </div><!--End Invoice Mid-->
+
+            <div id="bot">
+
+                <div id="table">
+                    <table>
+                        <tr class="tabletitle">
+                            <td class="item"><h5>المنتج</h5></td>
+                            <td class="Rate"><h5>الكمية</h5></td>
+                            <td class="Rate"><h5>لون</h5></td>
+                            <td class="Rate"><h5>المقاس</h5></td>
+                            <td class="Hours"><h5>السعر</h5></td>
                         </tr>
-                    @endforeach
-                @endif
+                        @if($bill->billDetails->count())
+                            @foreach($bill->billDetails as $billDetails)
+                                <tr class="service">
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->product->name??'-'}}</p>
+                                    </td>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->qty}}</p></td>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->color??'-'}}</p>
+                                    </td>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->size??'-'}}</p>
+                                    </td>
+                                    <td class="tableitem"><p class="itemtext">{{$billDetails->price}} ج.م </p></td>
+                                </tr>
+                            @endforeach
+                        @endif
 
 
-                <tr class="tabletitle">
-                    <td></td>
-                    <td class="Rate"><h5> السعر قبل</h5></td>
-                    <td class="payment"><h5>{{$bill->price??'-'}} ج.م</h5></td>
-                </tr>
+                        <tr class="tabletitle">
+                            <td></td>
+                            <td class="Rate"><h5> السعر قبل</h5></td>
+                            <td class="payment"><h5>{{$bill->price??'-'}} ج.م</h5></td>
+                        </tr>
 
-                <tr class="tabletitle">
-                    <td></td>
-                    <td class="Rate"><h5>نسبة الخصم</h5></td>
-                    <td class="payment"><h5>{{$bill->discount_percentage??'-'}} ج.م</h5></td>
-                </tr>
-                <tr class="tabletitle">
-                    <td></td>
-                    <td class="Rate"><h5>مصاريف الشحن</h5></td>
-                    <td class="payment"><h5>{{$bill->delivery_fee??'0'}} ج.م</h5></td>
-                </tr>
-                <tr class="tabletitle">
-                    <td></td>
-                    <td class="Rate"><h5>السعر الاجمالي</h5></td>
-                    <td class="payment"><h5>{{$bill->price_after??'-'}} ج.م</h5></td>
-                </tr>
+                        <tr class="tabletitle">
+                            <td></td>
+                            <td class="Rate"><h5>نسبة الخصم</h5></td>
+                            <td class="payment"><h5>{{$bill->discount_percentage??'-'}} ج.م</h5></td>
+                        </tr>
+                        <tr class="tabletitle">
+                            <td></td>
+                            <td class="Rate"><h5>مصاريف الشحن</h5></td>
+                            <td class="payment"><h5>{{$bill->delivery_fee??'0'}} ج.م</h5></td>
+                        </tr>
+                        <tr class="tabletitle">
+                            <td></td>
+                            <td class="Rate"><h5>السعر الاجمالي</h5></td>
+                            <td class="payment"><h5>{{$bill->price_after??'-'}} ج.م</h5></td>
+                        </tr>
 
-            </table>
-        </div><!--End Table-->
+                    </table>
+                </div><!--End Table-->
 
-        <div id="legalcopy">
-            <p class="legal"><strong>ملاحظة</strong> {{$bill->note??'-'}}
-            </p>
-        </div>
+                <div id="legalcopy">
+                    <p class="legal"><strong>ملاحظة</strong> {{$bill->note??'-'}}
+                    </p>
+                </div>
 
-    </div><!--End InvoiceBot-->
-</div><!--End Invoice-->
-@endforeach
+            </div><!--End InvoiceBot-->
+            </div>
+        </div><!--End Invoice-->
+    @endforeach
 @endif
 </body>
 </html>
