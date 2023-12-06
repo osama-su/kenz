@@ -208,10 +208,12 @@
                            data-target="#company_modal">
                             اطبع المحدد
                         </a>
-                        <a class="btn btn-primary col-md-12 mt-5 company-button"
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <a class="btn btn-primary col-md-12 mt-5 all_company-button"
                            data-toggle="modal"
-                           data-target="#company_modal">
-                            تحميل شيت المحدد
+                           data-target="#all_company_modal">
+                            اطبع الكل
                         </a>
                     </div>
 
