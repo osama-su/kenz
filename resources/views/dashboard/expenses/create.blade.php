@@ -85,7 +85,7 @@
                                 <input name="amount" type="number"
                                        value="{{ old("amount") }}"
                                        class="form-control {{ $errors->has("amount") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك الكمية"/>
+                                       placeholder="من فضلك القيمة"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
                                         {{ $errors->has("amount") ? $errors->first("amount") : null }}

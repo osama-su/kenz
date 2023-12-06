@@ -13,7 +13,7 @@ class UpdateExpensesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required',
+            'amount' => 'required',
+            'image' => 'sometimes',
+            'created_by' => 'required',
         ];
     }
 }

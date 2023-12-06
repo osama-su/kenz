@@ -47,17 +47,17 @@
 @section('page_header')
     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
         <li class="breadcrumb-item">
-            <a href="{{route('dashboard.products.index')}}" class="text-muted">المنتجات</a>
+            <a href="{{route('dashboard.expenses.index')}}" class="text-muted">المنتجات</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('dashboard.products.edit',['product'=>$product->id])}}" class="text-muted">تعديل</a>
+            <a href="{{route('dashboard.expenses.edit',['expense'=>$expense->id])}}" class="text-muted">تعديل</a>
         </li>
     </ul>
 @endsection
 @section('content')
 
         <div class="row">
-               <form action="{{route('dashboard.products.update',['product'=>$product->id])}}" method="post"
+               <form action="{{route('dashboard.expenses.update',['expense'=>$expense->id])}}" method="post"
           enctype="multipart/form-data">
             <div class="col-md-12">
                 <!--begin::Card-->
@@ -70,105 +70,48 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label style="float: right;">الاسم:
+                                <label style="float: right;">اسم المصروف:
                                     <span class="text-danger">*</span></label>
-                                <input name="name"
-                                       value="{{$product->name??old("name")}}"
-                                       class="form-control {{ $errors->has("name") ? 'is-invalid' : '' }}"
+                                <input name="title"
+                                       value="{{$expense->title??old("title")}}"
+                                       class="form-control {{ $errors->has("title") ? 'is-invalid' : '' }}"
                                        placeholder="من فضلك ادخل الاسم"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("name") ? $errors->first("name") : null }}
+                                        {{ $errors->has("title") ? $errors->first("title") : null }}
                                     </span>
                             </div>
                             <div class="col-md-6">
                                 <label style="float: right;"> القيمة :
                                     <span class="text-danger">*</span></label>
-                                <input  type="number" readonly
-                                       value="{{ $product->inventory()->sum('qty')??old("qty") }}"
-                                       class="form-control "
-                                       placeholder="من فضلك الكمية"/>
+                                <input name="amount" type="number"
+                                       value="{{ $expense->amount??old("amount") }}"
+                                       class="form-control {{ $errors->has("amount") ? 'is-invalid' : '' }}"
+                                       placeholder="من فضلك القيمة"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
+                                        {{ $errors->has("amount") ? $errors->first("amount") : null }}
                                     </span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label style="float: right;">الحجم :
+                                <label style="float: right;">اسم الصارف:
                                     <span class="text-danger">*</span></label>
-                                <input name="size"
-                                       type="text"
-                                       data-role="tagsinput"
-                                       value="{{$product->size??old('size')}}"
-                                       class="form-control {{ $errors->has("size") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الحجم"/>
+                                <input name="created_by"
+                                       value="{{$expense->created_by??old("created_by")}}"
+                                       class="form-control {{ $errors->has("created_by") ? 'is-invalid' : '' }}"
+                                       placeholder="من فضلك ادخل الاسم"/>
                                 <span
                                     class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("size") ? $errors->first("size") : null }}
+                                        {{ $errors->has("created_by") ? $errors->first("created_by") : null }}
                                     </span>
                             </div>
                             <div class="col-md-6">
-                                <label style="float: right;">الموديل:
-                                    <span class="text-danger">*</span></label>
-                                <input name="model" type="text"
-                                       data-role="tagsinput"
-                                       value="{{ $product->model??old("model") }}"
-                                       class="form-control {{ $errors->has("model") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الموديل"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("model") ? $errors->first("model") : null }}
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label style="float: right;"> اللون:
-                                    <span class="text-danger">*</span></label>
-                                <input name="color"
-                                       type="text"
-                                       data-role="tagsinput"
-                                       value="{{$product->color??old('color')}}"
-                                       class="form-control {{ $errors->has("color") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل اللون"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("color") ? $errors->first("color") : null }}
-                                    </span>
-                            </div>
-                            <div class="col-md-6">
-                                <label style="float: right;"> سعر الجملة :
-                                    <span class="text-danger">*</span></label>
-                                <input name="wholesale_price" type="number"
-                                       value="{{$product->wholesale_price??old("wholesale_price") }}"
-                                       class="form-control {{ $errors->has("wholesale_price") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل سعر الجملة"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("wholesale_price") ? $errors->first("wholesale_price") : null }}
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label style="float: right;"> السعر :
-                                    <span class="text-danger">*</span></label>
-                                <input name="price"
-                                       type="number"
-                                       value="{{$product->price??old('price')}}"
-                                       class="form-control {{ $errors->has("price") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل  السعر"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("price") ? $errors->first("price") : null }}
-                                    </span>
-                            </div>
-                            <div class="col-md-4">
                                 <label style="float: right;"> الصورة :
                                     <span class="text-danger">*</span></label>
                                 <input name="image" type="file"
-                                       value="{{old("image") }}"
+                                       value="{{$expense->image??old("image") }}"
                                        class="form-control {{ $errors->has("image") ? 'is-invalid' : '' }}"
                                        placeholder="من فضلك ادخل الصورة"/>
                                 <span
@@ -176,19 +119,8 @@
                                         {{ $errors->has("image") ? $errors->first("image") : null }}
                                     </span>
                             </div>
-                            <div class="col-md-2">
-                                @if($product->image)
-                                    @if(Storage::disk('public')->exists($product->image))
-                                        <img src="{{Storage::url($product->image)}}"
-                                             style="width: 100px;height: 100px;">
-                                    @else
-                                        لا توجد صورة
-                                    @endif
-                                @else
-                                    لا توجد صورة
-                                @endif
-                            </div>
                         </div>
+
                     </div>
                     <div class="card-footer">
                         {!! method_field('PUT') !!}
@@ -201,80 +133,6 @@
                 <!--end::Card-->
             </div>
                 </form>
-
-
-                        <div class="col-md-12">
-            <div class="card card-custom gutter-b example example-compact card-body">
-                               <form class=""
-                          action="{{ route('dashboard.productInventories.store',['product'=>$product->id]) }}"
-                          enctype="multipart/form-data"
-                          method="POST">
-                        <div class="kt-portlet__body">
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <div class="form-group m-form__group">
-                                        <label for="name" style="float: right;">الكمية :
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="number" value="{{old('qty') }}"
-                                               class="form-control m-input {{ $errors->has('qty') ? 'is-invalid' : '' }}"
-                                               id="qty" name="qty"
-                                               aria-describedby="emailHelp" placeholder="من فضلك ادخل الكمية ">
-                                        @if ($errors->has('qty'))
-                                            <span class="m-form__help text-danger" style="float: right;">
-                                        <strong>{{ $errors->first('qty') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {!! csrf_field() !!}
-                    <div class="card-footer">
-
-                        <button type="submit" class="btn btn-primary mr-2">حفظ</button>
-                        <button type="reset" class="btn btn-secondary">الغاء</button>
-                    </div>
-                    </form>
-
-
-                 <div class="card-body">
-            <div class="mt-3">
-                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
-                    <thead>
-                    <tr>
-                                                <th>#</th>
-
-                        <th>الكمية</th>
-                        <th>الفاتورة رقم</th>
-                        <th>التاريخ</th>
-
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @if($product->qties->count())
-                        @foreach($product->qties()->where('bill_id',null)->get() as $qty)
-                        <tr id="row-{{ $qty->id }}">
-                                                        <td>{{$qty->id??'-'}}</td>
-                            <td>{{$qty->qty??'-'}}</td>
-
-                            <td>{{$qty->bill_id??'-'}}</td>
-                            <td>{{$qty->created_at??'-'}}</td>
-
-                       </tr>
-                       @endforeach
-                       @endif
-                    </tbody>
-                </table>
-
-            </div>
-
-        </div>
-        </div>
-
-            </div>
-
         </div>
 @endsection
 @section('scripts')

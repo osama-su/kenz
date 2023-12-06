@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\StoreExpensesRequest;
+use App\Http\Requests\UpdateExpensesRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Expenses;
 use App\Models\Product;
@@ -75,11 +76,11 @@ class ExpensesController extends Controller
      * @param Product $product
      * @return View
      */
-    public function edit(Product $product): View
+    public function edit(Expenses $expense): View
     {
         $this->authorize('update_product');
 
-        return view('dashboard.products.edit', compact('product'));
+        return view('dashboard.expenses.edit', compact('expense'));
     }
 
     /**
@@ -87,13 +88,13 @@ class ExpensesController extends Controller
      * @param Product $product
      * @return RedirectResponse
      */
-    public function update(UpdateProductRequest $request, Product $product): RedirectResponse
+    public function update(UpdateExpensesRequest $request, Expenses $expense): RedirectResponse
     {
 
-        $product->update($request->all());
+        $expense->update($request->all());
 
 
-        return redirect()->route('dashboard.products.index')->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
+        return redirect()->route('dashboard.expenses.index')->with(['status' => 'success', 'message' => 'تم التعديل بنجاح']);
 
     }
 
@@ -101,9 +102,9 @@ class ExpensesController extends Controller
      * @param Product $product
      * @return JsonResponse
      */
-    public function destroy(Product $product): JsonResponse
+    public function destroy(Expenses $expense): JsonResponse
     {
-        $product->delete();
+        $expense->delete();
 
         return response()->json(['status' => 'success', 'message' => 'تم المسح بنجاح']);
     }
