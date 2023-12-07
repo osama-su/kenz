@@ -160,7 +160,7 @@
                 <form action="{{route('dashboard.generate_pdf')}}" method="post">
 
 
-                    <table class="table table-separate table-head-custom table-checkable responsive" id="kt_datatable">
+                    <table class="table table-separate table-head-custom table-checkable responsive table-responsive" id="kt_datatable">
                         <thead>
                         <tr>
                             @can('print_bill')
@@ -294,7 +294,7 @@
         $('#kt_datatable thead tr').clone(true).appendTo('#kt_datatable thead');
         $('#kt_datatable thead tr:eq(1) th').each(function (i) {
             if (i === 1 || i === 2 || i === 5) {
-                $(this).html('<input type="text" class="form-control" />');
+                $(this).html('<input type="text" class="form-control" style="width: 100%"/>');
 
                 var title = $(this).text();
                 $(this).html('<input type="text" class="col-md-12" />');
@@ -320,13 +320,14 @@
                 // url: "//cdn.datatables.net/plug-ins/1.11.3/i18n/ar.json",
             },
             processing: true,
-            dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
-                      <'row'<'col-sm-12'tr>>
-                      <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+            dom: "<'row'<'col-md-6 text-left'f><'col-md-6 text-right'B>>" +
+                "<'row'<'col-md-12'tr>>" +
+                "<'row'<'col-md-5'i><'col-md-7 dataTables_pager'lp>>",
             select: {
                 style: 'multi',
                 selector: 'td:first-child'
             },
+
             buttons: [
                 {
                     extend: 'excel',
