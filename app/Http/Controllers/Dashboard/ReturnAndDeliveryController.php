@@ -208,6 +208,11 @@ class ReturnAndDeliveryController extends Controller
                     if ($request->delivery_now_status == 'تسليم') {
                         $query->where('deleted_at', null)->where('delivery_status ', '!=', null);
                     }
+                    if ($request->delivery_now_status == 'مرتجع جزئي') {
+                        $query->whereHas('billDetails', function ($q) {
+                            $q->withTrashed()->where('delivery_status', '!=', 'yes');
+                        });
+                    }
                 }
                 if ($request->price_after) {
                     $query->where('price_after', 'like', '%' . $request->price_after . '%');

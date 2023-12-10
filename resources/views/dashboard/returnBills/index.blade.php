@@ -177,6 +177,7 @@
                         <option value="">اختار</option>
                         <option value="مرتجع">مرتجع</option>
                         <option value="تسليم">تسليم</option>
+                        <option value="مرتجع جزئي">مرتجع جزئي</option>
                     </select>
 
                 </div>
