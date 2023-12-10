@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateBillRequest;
 use App\Models\Bill;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,6 +30,9 @@ class ReturnAndDeliveryController extends Controller
         $bills = Bill::withTrashed()->where('created_by', Auth::user()->id)->with(['billDetails' => function ($q) {
             $q->withTrashed();
         }])->where('deleted_type', '!=', 'cancel')->get();
+
+        $suppliers = Supplier::all();
+        $products = Product::all();
         if (Auth::user()->role_id == '1') {
 
             $bills = Bill::withTrashed()->with(['billDetails' => function ($q) {
@@ -40,8 +44,12 @@ class ReturnAndDeliveryController extends Controller
             $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
 
+        if ($request->supplier_id) {
+            $bills = $bills->where('supplier_id', $request->supplier_id);
+        }
 
-        return view('dashboard.returnBills.index', compact('bills'));
+
+        return view('dashboard.returnBills.index', compact('bills', 'suppliers', 'products'));
     }
 
     public function show(DataTables $dataTables, Request $request)
@@ -49,6 +57,7 @@ class ReturnAndDeliveryController extends Controller
         $model = Bill::withTrashed()->where('created_by', Auth::user()->id)->with(['billDetails' => function ($q) {
             $q->withTrashed();
         }])->where('deleted_type', '!=', 'cancel');
+        $suppliers = Supplier::all();
         if (Auth::user()->role_id == '1') {
 
             $model = Bill::withTrashed()->with(['billDetails' => function ($q) {
@@ -88,8 +97,8 @@ class ReturnAndDeliveryController extends Controller
             ->editColumn('gov', function (Bill $bill) {
                 return $bill->user->gov ?? '-';
             })
-            ->editColumn('created_by', function (Bill $bill) {
-                return \App\Models\User::where('id', $bill->created_by)->first()->name ?? '-';
+            ->editColumn('supplier', function (Bill $bill) {
+                return $bill->supplier->name ?? '-';
             })
             ->addColumn('qty', function (Bill $bill) {
                 return $bill->billDetails->map(function ($billDetails) {
@@ -166,11 +175,19 @@ class ReturnAndDeliveryController extends Controller
                         $q->where('gov', 'like', '%' . $request->gov . '%');
                     });;
                 }
-                if ($request->created_by) {
-                    $user = \App\Models\User::where('name', 'like', '%' . $request->created_by . '%')->first() ?? '-';
-                    $query->whereHas('user', function ($q) use ($user) {
-                        $q->where('created_by', $user->id);
-                    });;
+//                if ($request->created_by) {
+//                    $user = \App\Models\User::where('name', 'like', '%' . $request->created_by . '%')->first() ?? '-';
+//                    $query->whereHas('user', function ($q) use ($user) {
+//                        $q->where('created_by', $user->id);
+//                    });;
+//                }
+                if ($request->supplier_id) {
+                    $query->where('supplier_id', $request->supplier_id);
+                }
+                if ($request->product_id) {
+                    $query->whereHas('billDetails', function ($q) use ($request) {
+                        $q->where('product_id', $request->product_id);
+                    });
                 }
                 if ($request->delivery_status) {
                     $query->whereHas('billDetails', function ($q) use ($request) {

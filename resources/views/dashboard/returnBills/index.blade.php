@@ -73,31 +73,92 @@
 
                 </div>
                 <div class="col-md-3 mt-1">
-                    <label style="float: right;">المحافظة:
+                    <label style="float: right;"> المحافظة:
                     </label>
-                    <input name="gov" id="gov"
-                           value="{{old("gov")}}"
-                           class="form-control "
-                    />
-
+                    <select id="gov" class="form-control" name="gov">
+                        <option value="">اختار</option>
+                        <option value="الغربية" {{Request()->gov=='الغربية'?'selected':null}}>الغربية</option>
+                        <option value="الجيزة"{{Request()->gov=='الجيزة'?'selected':null}}>الجيزة</option>
+                        <option value="الإسماعيلية"{{Request()->gov=='الإسماعيلية'?'selected':null}}>الإسماعيلية
+                        </option>
+                        <option value="كفر الشيخ"{{Request()->gov=='كفر الشيخ'?'selected':null}}>كفر الشيخ</option>
+                        <option value="مطروح"{{Request()->gov=='مطروح'?'selected':null}}>مطروح</option>
+                        <option value="المنيا"{{Request()->gov=='المنيا'?'selected':null}}>المنيا</option>
+                        <option value="المنوفية"{{Request()->gov=='المنوفية'?'selected':null}}>المنوفية</option>
+                        <option value="الوادي الجديد"{{Request()->gov=='الوادي الجديد'?'selected':null}}>الوادي
+                            الجديد
+                        </option>
+                        <option value="شمال سيناء"{{Request()->gov=='شمال سيناء'?'selected':null}}>شمال سيناء
+                        </option>
+                        <option value="بورسعيد"{{Request()->gov=='بورسعيد'?'selected':null}}>بورسعيد</option>
+                        <option value="القليوبية"{{Request()->gov=='القليوبية'?'selected':null}}>القليوبية</option>
+                        <option value="قنا"{{Request()->gov=='قنا'?'selected':null}}>قنا</option>
+                        <option value="البحر الأحمر"{{Request()->gov=='البحر الأحمر'?'selected':null}}>البحر
+                            الأحمر
+                        </option>
+                        <option value="الشرقية"{{Request()->gov=='الشرقية'?'selected':null}}>الشرقية</option>
+                        <option value="سوهاج"{{Request()->gov=='سوهاج'?'selected':null}}>سوهاج</option>
+                        <option value="جنوب سيناء"{{Request()->gov=='جنوب سيناء'?'selected':null}}>جنوب سيناء
+                        </option>
+                        <option value="السويس"{{Request()->gov=='السويس'?'selected':null}}>السويس</option>
+                        <option value="الأقصر"{{Request()->gov=='الأقصر'?'selected':null}}>الأقصر</option>
+                        <option value="القاهرة"{{Request()->gov=='القاهرة'?'selected':null}}>القاهرة</option>
+                        <option value="الإسكندرية"{{Request()->gov=='الإسكندرية'?'selected':null}}>الإسكندرية
+                        </option>
+                        <option value="الفيوم"{{Request()->gov=='الفيوم'?'selected':null}}>الفيوم</option>
+                        <option value="أسوان"{{Request()->gov=='أسوان'?'selected':null}}>أسوان</option>
+                        <option value="أسيوط"{{Request()->gov=='أسيوط'?'selected':null}}>أسيوط</option>
+                        <option value="البحيرة"{{Request()->gov=='البحيرة'?'selected':null}}>البحيرة</option>
+                        <option value="بني سويف"{{Request()->gov=='بني سويف'?'selected':null}}>بني سويف</option>
+                        <option value="الدقهلية"{{Request()->gov=='الدقهلية'?'selected':null}}>الدقهلية</option>
+                        <option value="دمياط"{{Request()->gov=='دمياط'?'selected':null}}>دمياط</option>
+                    </select>
+                    <span
+                        class="form-text text-danger" style="float: right;">
+                                        {{ $errors->has("gov") ? $errors->first("gov") : null }}
+                                    </span>
                 </div>
-                <div class="col-md-3 mt-1">
-                    <label style="float: right;">اسم المورد:
-                    </label>
-                    <input name="created_by" id="created_by"
-                           value="{{old("created_by")}}"
-                           class="form-control "
-                    />
+{{--                <div class="col-md-3 mt-1">--}}
+{{--                    <label style="float: right;">اسم المورد:--}}
+{{--                    </label>--}}
+{{--                    <input name="created_by" id="created_by"--}}
+{{--                           value="{{old("created_by")}}"--}}
+{{--                           class="form-control "--}}
+{{--                    />--}}
 
+{{--                </div>--}}
+                <div class="col-lg-3 mt-1">
+                    <label style="float: right;"> الموارد:</label>
+                    <select name="supplier_id" id="supplier_id" class="form-control ">
+                        <option value="">اختار</option>
+                        @if($suppliers->count())
+                            @foreach($suppliers as $supplier)
+                                <option
+                                    value="{{$supplier->id}}" {{Request()->supplier_id==$supplier->id?'selected':null}}>{{$supplier->id}}{{$supplier->name}}</option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
-                <div class="col-md-3 mt-1">
-                    <label style="float: right;">اسم المنتج:
-                    </label>
-                    <input name="delivery_status" id="delivery_status"
-                           value="{{old("delivery_status")}}"
-                           class="form-control "
-                    />
+{{--                <div class="col-md-3 mt-1">--}}
+{{--                    <label style="float: right;">اسم المنتج:--}}
+{{--                    </label>--}}
+{{--                    <input name="delivery_status" id="delivery_status"--}}
+{{--                           value="{{old("delivery_status")}}"--}}
+{{--                           class="form-control "--}}
+{{--                    />--}}
 
+{{--                </div>--}}
+                <div class="col-lg-3 mt-1">
+                    <label style="float: right;"> المنتج :</label>
+                    <select name="product_id" id="product_id" class="form-control ">
+                        <option value="">اختار</option>
+                        @if($products->count())
+                            @foreach($products as $product)
+                                <option
+                                    value="{{$product->id}}" {{Request()->product_id==$product->id?'selected':null}}> {{$product->name??'-'}}</option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
                 <div class="col-md-3 mt-1">
                     <label style="float: right;">الكمية:
@@ -199,7 +260,8 @@
                 data: function (d) {
                     d.name = $('#name').val();
                     d.gov = $('#gov').val();
-                    d.created_by = $('#created_by').val();
+                    d.supplier_id = $('#supplier_id').val();
+                    d.product_id = $('#product_id').val();
                     d.delivery_status = $('#delivery_status').val();
                     d.qty = $('#qty').val();
                     d.delivery_now_status = $('#delivery_now_status').val();
@@ -215,7 +277,7 @@
                 {data: 'qr', name: 'qr', defaultContent: '-'},
                 {data: 'name', name: 'name', defaultContent: '-'},
                 {data: 'gov', name: 'gov', defaultContent: '-'},
-                {data: 'created_by', name: 'created_by', defaultContent: '-'},
+                {data: 'supplier', name: 'supplier', defaultContent: '-'},
                 {data: 'delivery_status', name: 'delivery_status', defaultContent: '-'},
                 {data: 'qty', name: 'qty', defaultContent: '-'},
                 {data: 'delivery_now_status', name: 'delivery_now_status', defaultContent: '-'},
@@ -234,9 +296,12 @@
         $('#gov').on('keyup change', function () {
             $('#kt_datatable').DataTable().draw(true);
         });
-        $('#created_by').on('keyup change', function () {
+        $('#supplier_id').on('keyup change', function () {
             $('#kt_datatable').DataTable().draw(true);
         });
+        $('#product_id').on('keyup change', function () {
+            $('#kt_datatable').DataTable().draw(true);
+        })
         $('#delivery_status').on('keyup change', function () {
             $('#kt_datatable').DataTable().draw(true);
         });
