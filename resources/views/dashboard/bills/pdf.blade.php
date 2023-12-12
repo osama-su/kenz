@@ -190,24 +190,42 @@ $company = Company::where('id', Request()->company_id)->first();
 @if($bills->count())
     @foreach($bills as $bill)
         @php
-            if(Request()->company_id!=$bill->company_id){
-             $bill->update(['company_id' => Request()->company_id]);
-            if($bill->delivery_fee==null||$bill->delivery_fee==0){
-              $bill->update(['company_id' => Request()->company_id,
-                            'delivery_fee' => $company ? ($company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0) : 0]);
+            if (Request()->company_id != $bill->company_id) {
+                // Deduct from the company wallet
+//                $bill->company->wallet()->where('bill_id', $bill->id)->delete();
+
+                if($bill->company){
+                $companyWallet = $bill->company->wallet();
+
+                if ($companyWallet->where('bill_id', $bill->id)->where('type', 'return')->count() == 0 &&
+                    $companyWallet->where('bill_id', $bill->id)->where('type', 'done')->count() == 0) {
+                    // Create a return entry in the company wallet
+                    $companyWallet->create(['bill_id' => $bill->id, 'amount' => ($bill->price - $bill->discount_percentage), 'type' => 'return']);
+                }
+                }
+
+                // Update company ID for the bill
+                $bill->update(['company_id' => Request()->company_id]);
+                $bill->refresh();
+
+                if ($bill->delivery_fee == null || $bill->delivery_fee == 0) {
+                    // Update delivery fee if necessary
+                    $bill->update(['delivery_fee' => $company->gov()->where('gov', 'like', '%%' . $bill->user->gov . '%%')->first()->price ?? 0]);
+                }
+
+                $price = -$bill->price;
+
+                if ($bill->discount_percentage) {
+                    $price = -($bill->price - $bill->discount_percentage);
+                }
+
+                // Create a new entry in the company wallet for the updated bill
+                $bill->company->wallet()->create(['amount' => $price, 'bill_id' => $bill->id]);
+
+
             }
-
-                        $price = -$bill->price;
-
-                        if ($bill->discount_percentage) {
-                            $price = -($bill->price-$bill->discount_percentage);
-                        }
-
-                        $bill->company->wallet()->create(['amount'=>$price,'bill_id'=>$bill->id]);
-
-                        }
-                        $bill->update(['print' => 'yes','price_after'=>($bill->price-$bill->discount_percentage)+($bill->delivery_fee)]);
-
+            // Update print status and price after processing
+                $bill->update(['print' => 'yes', 'price_after' => ($bill->price - $bill->discount_percentage) + ($bill->delivery_fee)]);
 
         @endphp
         <div @if(! ($bills->last() == $bill))
