@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class, 'created_by')->orderBy('created_at', 'desc');
+    }
 }
