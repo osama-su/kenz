@@ -81,6 +81,7 @@ Route::namespace('Dashboard')->group(function () {
 
         // Expenses Route
         Route::resource('expenses', 'ExpensesController')->except('show');
+        Route::resource('expense-types', 'ExpenseTypesController')->except('show');
 
 
     Route::group(['prefix' => '{product}'], function () {
