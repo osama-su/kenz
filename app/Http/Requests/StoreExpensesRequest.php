@@ -24,7 +24,7 @@ class StoreExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'expense_type_id' => 'required|exists:expense_types,id',
             'amount' => 'required',
             'image' => 'sometimes',
             'created_by' => 'required',

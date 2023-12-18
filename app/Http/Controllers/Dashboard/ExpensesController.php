@@ -8,6 +8,7 @@ use App\Http\Requests\StoreExpensesRequest;
 use App\Http\Requests\UpdateExpensesRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Expenses;
+use App\Models\ExpenseType;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -37,10 +38,21 @@ class ExpensesController extends Controller
         if ($request->date_from || $request->date_to) {
             $expenses = $expenses->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
+        if ($request->expense_type_id)
+        {
+            $expenses = $expenses->where('expense_type_id', $request->expense_type_id);
+        }
 
         $expenses = $expenses->get();
 
-        return view('dashboard.expenses.index', compact('expenses'));
+        $totalExpenses = $expenses->sum('amount');
+
+        foreach (ExpenseType::all() as $expenseType) {
+            $stats[$expenseType->id] = ['name'=>$expenseType->name, 'amount'=> $expenses->where('expense_type_id', $expenseType->id)->sum('amount')];
+        }
+        $expenseTypes = ExpenseType::all();
+
+        return view('dashboard.expenses.index', compact('expenses', 'totalExpenses', 'stats', 'expenseTypes'));
     }
 
     /**
@@ -51,6 +63,7 @@ class ExpensesController extends Controller
     {
 
         $data = $request->all();
+        $data['title'] = ExpenseType::find($data['expense_type_id'])->name;
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->image->store('uploads', 'public');
@@ -69,7 +82,9 @@ class ExpensesController extends Controller
     {
         $this->authorize('create_product');
 
-        return view('dashboard.expenses.create');
+        $expenseTypes = ExpenseType::all();
+
+        return view('dashboard.expenses.create', compact('expenseTypes'));
     }
 
     /**
@@ -80,7 +95,9 @@ class ExpensesController extends Controller
     {
         $this->authorize('update_product');
 
-        return view('dashboard.expenses.edit', compact('expense'));
+        $expenseTypes = ExpenseType::all();
+
+        return view('dashboard.expenses.edit', compact('expense', 'expenseTypes'));
     }
 
     /**

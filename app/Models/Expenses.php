@@ -14,7 +14,11 @@ class Expenses extends Model
         'amount',
         'image',
         'created_by',
+        'expense_type_id',
     ];
 
-
+    public function expenseType()
+    {
+        return $this->belongsTo(ExpenseType::class);
+    }
 }

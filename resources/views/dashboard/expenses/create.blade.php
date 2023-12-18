@@ -1,48 +1,56 @@
 @extends('dashboard.layouts.master')
 @section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css" integrity="sha512-wu4jn1tktzX0SHl5qNLDtx1uRPSj+pm9dDgqsrYUS16AqwzfdEmh1JR8IQL7h+phL/EAHpbBkISl5HXiZqxBlQ==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
-<style>
-    .label.label-info {
-        color: #FFFFFF;
-        background-color: #6d90ea;
-        width: fit-content;
-        max-width: fit-content;
-    }
-    .label {
-        padding: 10px;
-        margin: 3px;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        height: 20px;
-        width: 20px;
-        border-radius: 0%;
-        font-size: 0.8rem;
-        background-color: #EBEDF3;
-        color: #3F4254;
-        font-weight: 400;
-        height: 20px;
-        width: 20px;
-        font-size: 0.8rem;
-    }
-    .bootstrap-tagsinput input {
-        border: none;
-        box-shadow: none;
-        outline: none;
-        background-color: transparent;
-        padding: 0 6px;
-        margin: 0;
-        width: 583px;
-        max-width: inherit;
-    }
-</style>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css"
+          integrity="sha512-wu4jn1tktzX0SHl5qNLDtx1uRPSj+pm9dDgqsrYUS16AqwzfdEmh1JR8IQL7h+phL/EAHpbBkISl5HXiZqxBlQ=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+          integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg=="
+          crossorigin="anonymous"/>
+    <style>
+        .label.label-info {
+            color: #FFFFFF;
+            background-color: #6d90ea;
+            width: fit-content;
+            max-width: fit-content;
+        }
+
+        .label {
+            padding: 10px;
+            margin: 3px;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            height: 20px;
+            width: 20px;
+            border-radius: 0%;
+            font-size: 0.8rem;
+            background-color: #EBEDF3;
+            color: #3F4254;
+            font-weight: 400;
+            height: 20px;
+            width: 20px;
+            font-size: 0.8rem;
+        }
+
+        .bootstrap-tagsinput input {
+            border: none;
+            box-shadow: none;
+            outline: none;
+            background-color: transparent;
+            padding: 0 6px;
+            margin: 0;
+            width: 583px;
+            max-width: inherit;
+        }
+    </style>
 @endsection
 @section('page_header')
     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -69,15 +77,21 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label style="float: right;">اسم المصروف:
-                                    <span class="text-danger">*</span></label>
-                                <input name="title"
-                                       value="{{old("title")}}"
-                                       class="form-control {{ $errors->has("title") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الاسم"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("title") ? $errors->first("title") : null }}
-                                    </span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select name="expense_type_id"
+                                        class="form-control {{ $errors->has("expense_type_id") ? 'is-invalid' : '' }}">
+                                    <option value="" disabled selected>اختر نوع المصروف</option>
+                                    @foreach($expenseTypes as $expenseType)
+                                        <option
+                                            value="{{ $expenseType->id }}" {{ old('expense_type_id') == $expenseType->id ? 'selected' : '' }}>
+                                            {{ $expenseType->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="form-text text-danger" style="float: right;">
+        {{ $errors->has("expense_type_id") ? $errors->first("expense_type_id") : null }}
+    </span>
                             </div>
                             <div class="col-md-6">
                                 <label style="float: right;"> القيمة :
@@ -133,5 +147,7 @@
     </form>
 @endsection
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"
+            integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g=="
+            crossorigin="anonymous"></script>
 @endsection

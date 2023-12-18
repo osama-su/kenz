@@ -71,15 +71,21 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label style="float: right;">اسم المصروف:
-                                    <span class="text-danger">*</span></label>
-                                <input name="title"
-                                       value="{{$expense->title??old("title")}}"
-                                       class="form-control {{ $errors->has("title") ? 'is-invalid' : '' }}"
-                                       placeholder="من فضلك ادخل الاسم"/>
-                                <span
-                                    class="form-text text-danger" style="float: right;">
-                                        {{ $errors->has("title") ? $errors->first("title") : null }}
-                                    </span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select name="expense_type_id"
+                                        class="form-control {{ $errors->has("expense_type_id") ? 'is-invalid' : '' }}">
+                                    <option value="" disabled selected>اختر نوع المصروف</option>
+                                    @foreach($expenseTypes as $expenseType)
+                                        <option
+                                            value="{{ $expenseType->id }}" {{ $expense->expense_type_id??old('expense_type_id') == $expenseType->id ? 'selected' : '' }}>
+                                            {{ $expenseType->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="form-text text-danger" style="float: right;">
+        {{ $errors->has("expense_type_id") ? $errors->first("expense_type_id") : null }}
+    </span>
                             </div>
                             <div class="col-md-6">
                                 <label style="float: right;"> القيمة :

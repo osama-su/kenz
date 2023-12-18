@@ -39,6 +39,54 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-xl-4">
+                <!--begin::Stats Widget 7-->
+                <div class="card card-custom card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                            <div class="d-flex flex-column mr-2">
+                                <a href="{{route('dashboard.users.index')}}"
+                                   class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي المصروفات</a>
+                            </div>
+                            <span class="symbol symbol-light-success symbol-45">
+                                <span
+                                    class="symbol-label font-weight-bolder font-size-h6">{{$totalExpenses}}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Stats Widget 7-->
+            </div>
+
+        </div>
+        <div class="row">
+            @foreach($stats as $stat)
+                <div class="col-xl-3">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">{{$stat['name']}}</a>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+                                <span
+                                    class="symbol-label font-weight-bolder font-size-h6">{{$stat['amount']}}</span>
+                            </span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+            @endforeach
+        </div>
+
         <div class="card-body">
             <form action="{{route('dashboard.expenses.index')}}" method="get">
                 <div class="row mt-3">
@@ -55,6 +103,21 @@
                                name="date_to"
                                class="form-control updated_at"
                                placeholder="من فضلك ادخل التاريخ الي">
+                    </div>
+                    <div class="col-md-6">
+                        <select name="expense_type_id"
+                                class="form-control {{ $errors->has("expense_type_id") ? 'is-invalid' : '' }}">
+                            <option value="" disabled selected>اختر نوع المصروف</option>
+                            @foreach($expenseTypes as $expenseType)
+                                <option
+                                    value="{{ $expenseType->id }}" {{ $expense->expense_type_id??old('expense_type_id') == $expenseType->id ? 'selected' : '' }}>
+                                    {{ $expenseType->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <span class="form-text text-danger" style="float: right;">
+        {{ $errors->has("expense_type_id") ? $errors->first("expense_type_id") : null }}
+    </span>
                     </div>
                     <div class="col-lg-12 mt-3">
                         {!! csrf_field() !!}
