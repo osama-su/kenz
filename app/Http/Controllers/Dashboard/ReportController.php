@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Company;
+use App\Models\Expenses;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Supplier;
@@ -45,8 +46,11 @@ class ReportController extends Controller
             $q->withTrashed();
         }])->orderBy('created_at', 'desc');
 
+        $expenses = expenses::orderBy('created_at', 'desc');
+
         if ($request->date_from || $request->date_to) {
             $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $expenses = $expenses->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
 
         if ($request->gov) {
@@ -102,7 +106,19 @@ class ReportController extends Controller
 
         $bills = $bills->get();
 
-        return view('dashboard.reports.show', compact('bills'));
+
+        $profit = 0;
+        $expenses = $expenses->get()->sum('amount');
+
+        foreach ($bills as $bill) {
+            $profit += $bill->billDetails->map(static function ($billDetails) {
+                    return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
+                })->sum()-$bill->delivery_fee;
+        }
+
+        $profit = $profit - $expenses;
+
+        return view('dashboard.reports.show', compact('bills', 'profit'));
     }
 
         function generate_pdf(Request $request)

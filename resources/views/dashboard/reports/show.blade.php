@@ -20,8 +20,8 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
-            <div>
-                <div class="col-xl-12">
+            <div class="row">
+                <div class="col-xl-6">
                     <!--begin::Stats Widget 7-->
                     <div class="card card-custom card-stretch gutter-b">
                         <!--begin::Body-->
@@ -35,6 +35,27 @@
                                 <span class="symbol symbol-light-success symbol-45">
 														<span
                                                             class="symbol-label font-weight-bolder font-size-h6">{{$bills->count()}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-6">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">الأرباح</a>
+                                    <span class="text-muted font-weight-bold mt-2">الأرباح : مجموع الأيرادات ناقص التكلفة ناقص الشحن ناقص المصروفات</span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$profit}}</span>
 													</span>
                             </div>
                         </div>
