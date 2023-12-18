@@ -47,6 +47,8 @@ class ExpensesController extends Controller
 
         $totalExpenses = $expenses->sum('amount');
 
+        $stats = [];
+
         foreach (ExpenseType::all() as $expenseType) {
             $stats[$expenseType->id] = ['name'=>$expenseType->name, 'amount'=> $expenses->where('expense_type_id', $expenseType->id)->sum('amount')];
         }
