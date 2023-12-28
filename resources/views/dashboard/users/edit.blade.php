@@ -177,7 +177,7 @@
     }) }}</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable3">
+                    <table class="table table-separate table-head-custom table-checkable responsive table-responsive" id="kt_datatable3">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -267,9 +267,9 @@
                 responsive: true,
                 orderBy: [0, 'desc'],
                 // Pagination settings
-                dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
-			<'row'<'col-sm-12'tr>>
-			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+                dom: `<'row'<'col-md-6 text-left'f><'col-md-6 text-right'B>>
+			<'row'<'col-md-12'tr>>
+			<'row'<'col-md-5'i><'col-md-7 dataTables_pager'lp>>`,
                 order: [],
                 buttons: [
                     'print',
