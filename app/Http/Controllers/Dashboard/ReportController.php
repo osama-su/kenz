@@ -93,8 +93,9 @@ class ReportController extends Controller
 //        if ($request->product_id == null) {
 
         if ($request->delivery_status) {
-            $bills = $bills->wherehas('billDetails', function ($q) use($request) {
-                $q->withTrashed()->where('delivery_status', $request->delivery_status = 'pending' ? null : $request->delivery_status);
+            $status = $request->delivery_status == 'pending' ? null : $request->delivery_status;
+            $bills = $bills->wherehas('billDetails', function ($q) use($status) {
+                $q->withTrashed()->where('delivery_status', $status);
             });
         }
 //}
