@@ -202,16 +202,19 @@ class ReturnAndDeliveryController extends Controller
                     });
                 }
                 if ($request->delivery_now_status) {
-                    if ($request->delivery_now_status == 'مرتجع') {
+                    if ($request->delivery_now_status == 'returned') {
                         $query->where('deleted_at', '!=', null);
                     }
-                    if ($request->delivery_now_status == 'تسليم') {
+                    if ($request->delivery_now_status == 'delivered') {
                         $query->where('deleted_at', null)->where('delivery_status ', '!=', null);
                     }
-                    if ($request->delivery_now_status == 'مرتجع جزئي') {
+                    if ($request->delivery_now_status == 'partially_returned') {
                         $query->whereHas('billDetails', function ($q) {
                             $q->withTrashed()->where('delivery_status', '!=', 'yes');
                         });
+                    }
+                    if ($request->delivery_now_status == 'not_delivered') {
+                        $query->where('delivery_status', null);
                     }
                 }
                 if ($request->price_after) {

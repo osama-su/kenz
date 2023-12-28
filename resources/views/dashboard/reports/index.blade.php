@@ -134,6 +134,8 @@
                         <label style="float: right;"> حالة التسليم:</label>
                         <select name="delivery_status" class="form-control ">
                             <option value="">اختار</option>
+                            <option value="pending" {{Request()->delivery_status=='pending'?'selected':null}}>قيد التسليم
+                            </option>
                             <option value="yes" {{Request()->delivery_status=='yes'?'selected':null}}>تم التسليم
                             </option>
                             <option value="no" {{Request()->delivery_status=='no'?'selected':null}}> مرتجع</option>

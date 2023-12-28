@@ -175,9 +175,10 @@
                     <select name="delivery_now_status" id="delivery_now_status"
                             class="form-control ">
                         <option value="">اختار</option>
-                        <option value="مرتجع">مرتجع</option>
-                        <option value="تسليم">تسليم</option>
-                        <option value="مرتجع جزئي">مرتجع جزئي</option>
+                        <option value="returned">مرتجع</option>
+                        <option value="delivered">تسليم</option>
+                        <option value="partially_returned">مرتجع جزئي</option>
+                        <option value="not_delivered">قيد التسليم</option>
                     </select>
 
                 </div>
