@@ -182,9 +182,9 @@
                             @endif
                             <th>حالة الطبع</th>
                             <th>تاريخ الإنشاء</th>
-                            @can('update_delivery')
-                                <th>حالة التسليم الكلي</th>
-                            @endcan
+{{--                            @can('update_delivery')--}}
+{{--                                <th>حالة التسليم الكلي</th>--}}
+{{--                            @endcan--}}
                             <th>حاله التسليم</th>
                             <th>الاحداث</th>
                         </tr>
@@ -256,7 +256,7 @@
                 data: 'print_status', name: 'print_status', defaultContent: '-'
             },
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
-            {data: 'select_return', name: 'select_return', defaultContent: '-'},
+            // {data: 'select_return', name: 'select_return', defaultContent: '-'},
             {data: 'action', orderable: false, searchable: false, className: 'text-center'},
 
         ];
@@ -284,7 +284,7 @@
                 data: 'print_status', name: 'print_status', defaultContent: '-'
             },
             {data: 'created_by', name: 'created_by', defaultContent: '-'},
-            {data: 'select_return', name: 'select_return', defaultContent: '-'},
+            // {data: 'select_return', name: 'select_return', defaultContent: '-'},
             {data: 'delivery_status', name: 'delivery_status', defaultContent: '-'},
             {data: 'action', orderable: false, searchable: false, className: 'text-center'},
 
