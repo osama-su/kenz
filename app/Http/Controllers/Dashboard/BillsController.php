@@ -152,7 +152,8 @@ class BillsController extends Controller
                 });
         }
 
-        return $dataTables->eloquent($model)->addIndexColumn()
+
+        return$dataTables->eloquent($model)->addIndexColumn()
             ->editColumn('id', function (Bill $bill) {
                 return $bill->id ?? '-';
             })
@@ -256,13 +257,13 @@ class BillsController extends Controller
                 if ($request->gov) {
                     $query->whereHas('user', function ($q) use ($request) {
                         $q->where('gov', 'like', '%' . $request->gov . '%');
-                    });;
+                    });
                 }
                 if ($request->created_by) {
-                    $user = \App\Models\User::where('name', 'like', '%' . $request->created_by . '%')->first() ?? '-';
+                    $user = \App\Models\User::where('id', $request->created_by)->first() ?? '-';
                     $query->whereHas('user', function ($q) use ($user) {
                         $q->where('created_by', $user->id);
-                    });;
+                    });
                 }
                 if ($request->delivery_status) {
                     $query->whereHas('billDetails', function ($q) use ($request) {
@@ -301,7 +302,8 @@ class BillsController extends Controller
                 }
 
             })->make(true);
-    }
+
+        }
 
     /**
      * @param CreateBillRequest $request
