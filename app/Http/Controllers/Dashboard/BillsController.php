@@ -51,6 +51,10 @@ class BillsController extends Controller
             $bills = Bill::orderBy('created_at', 'desc');
         }
 
+        if(auth()->user()->can('read_own_bill'))
+        {
+            $bills->where('created_by',auth()->user()->id);
+        }
         if ($request->date_from || $request->date_to) {
             $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
@@ -82,7 +86,6 @@ class BillsController extends Controller
 
         $bills = $bills->get();
 
-
         return view('dashboard.bills.index', compact('bills', 'users', 'suppliers', 'products'));
     }
 
@@ -92,6 +95,11 @@ class BillsController extends Controller
         $model = Bill::query();
         if (Auth::user()->role_id == '1') {
             $model = $model->orderBy('created_at', 'desc');
+        }
+
+        if(auth()->user()->can('read_own_bill'))
+        {
+            $model->where('created_by',auth()->user()->id);
         }
 
         if ($request->date_from || $request->date_to) {
