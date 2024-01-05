@@ -111,6 +111,9 @@
                                                     @if(explode(' ',$operation->label)[0]=='print')
                                                         طباعة
                                                     @endif
+                                                        @if(explode(' ',$operation->label)[0]=='export_excel')
+                                                            تصدير
+                                                        @endif
                                                 </option>
                                             @endforeach
                                         </select>

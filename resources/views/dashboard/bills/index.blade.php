@@ -329,6 +329,7 @@
             },
 
             buttons: [
+                @can('export_excel_bill')
                 {
                     extend: 'excel',
                     title: 'الفواتير',
@@ -340,6 +341,7 @@
 
                     }
                 },
+                @endcan
                 'print',
                 'copyHtml5', 'csvHtml5', 'pdfHtml5',],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
