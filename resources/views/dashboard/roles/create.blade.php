@@ -105,6 +105,9 @@
                                                     @if(explode(' ',$operation->label)[0]=='read')
                                                         قراءة
                                                     @endif
+                                                    @if(explode(' ',$operation->label)[0]=='read_own')
+                                                            قراءة الخاص
+                                                    @endif
                                                     @if(explode(' ',$operation->label)[0]=='print')
                                                         طباعة
                                                     @endif
