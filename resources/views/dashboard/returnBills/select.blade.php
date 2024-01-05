@@ -1,3 +1,4 @@
+@if($bill->print == 'yes')
 @can('update_delivery')
     <td><select class="form-control deliveryStatus"
                 data-url="{{ route('dashboard.bills.deliveryStatus',['bill'=>$bill->id])}}"
@@ -16,3 +17,6 @@
         });
     });
 </script>
+@else
+لم يتم طباعة الفاتورة
+@endif
