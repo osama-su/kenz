@@ -341,9 +341,10 @@
 
                     }
                 },
-                @endcan
                 'print',
-                'copyHtml5', 'csvHtml5', 'pdfHtml5',],
+                'copyHtml5', 'csvHtml5', 'pdfHtml5',
+                @endcan
+            ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             order: [[0, "desc"]],
             ajax: {
