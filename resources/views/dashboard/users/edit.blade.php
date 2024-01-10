@@ -172,7 +172,7 @@
                     <h3 class="card-title">مجموع العمولات :
                         {{$user->bills->sum(function ($bill) {
         return $bill->billDetails->sum(function ($billDetail) {
-            return optional($billDetail->product)->commission;
+            return optional($billDetail->product)->commission * optional($billDetail->product)->qty;
         });
     }) }}</h3>
                 </div>
