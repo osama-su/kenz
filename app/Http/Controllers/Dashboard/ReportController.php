@@ -120,15 +120,20 @@ class ReportController extends Controller
         $billsCalc = $bills->where('delivery_status', 'yes');
         foreach ($billsCalc as $bill) {
             $totalSales += $bill->price_after;
-        }
-
-        foreach ($bills as $bill) {
             $totalCost += $bill->billDetails->map(static function ($billDetails) {
                 return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
             })->sum();
 
             $totalShipping += $bill->delivery_fee;
         }
+
+//        foreach ($bills as $bill) {
+//            $totalCost += $bill->billDetails->map(static function ($billDetails) {
+//                return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
+//            })->sum();
+//
+//            $totalShipping += $bill->delivery_fee;
+//        }
 
 
         $profit = $totalSales - $totalCost - $totalShipping - $totalExpenses;
