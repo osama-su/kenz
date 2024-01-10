@@ -37,7 +37,7 @@ class BillsController extends Controller
      */
     public function index(Request $request): View
     {
-        $this->authorize('read_bill');
+//        $this->authorize('read_own_bill');
 
 //        $bills = Bill::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc');
         $bills = Bill::query();

@@ -96,18 +96,18 @@
                 @endcan
                 @endhasRoleOnModel
                 @hasRoleOnModel('bill')
-                @can('read_bill')
+                @canany(['read_bill','read_own_bill'])
                 <li class="menu-item {{ request()->is('bills*') ? 'menu-item-open menu-item-here' : '' }}">
-                    <a @can('read_bill')
+                    <a @canany(['read_bill','read_own_bill'])
                        href="{{route('dashboard.bills.index')}}"
                        @elsecan('create_bill')
                        href="{{route('dashboard.bills.create')}}"
-                       @endcan
+                       @endcanany
                        class="menu-link">
                         <span class="menu-text">الفواتير</span>
                     </a>
                 </li>
-                @endcan
+                @endcanany
                 @endhasRoleOnModel
                 @hasRoleOnModel('report')
                 @can('read_report')
