@@ -108,6 +108,7 @@ class ReportController extends Controller
             ->get();
 
         $profit = 0;
+        $totalbills = 0;
         $totalSales = 0;
         $totalCost = 0;
         $totalShipping = 0;
@@ -127,13 +128,9 @@ class ReportController extends Controller
             $totalShipping += $bill->delivery_fee;
         }
 
-//        foreach ($bills as $bill) {
-//            $totalCost += $bill->billDetails->map(static function ($billDetails) {
-//                return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
-//            })->sum();
-//
-//            $totalShipping += $bill->delivery_fee;
-//        }
+        foreach ($bills as $bill) {
+            $totalbills += $bill->price_after;
+        }
 
 
         $profit = $totalSales - $totalCost - $totalShipping - $totalExpenses;
@@ -144,7 +141,7 @@ class ReportController extends Controller
 
 //        dd(compact('totalSales','totalCost','totalShipping','totalExpenses','profit'));
 
-        return view('dashboard.reports.show', compact('bills', 'totalSales', 'totalCost', 'totalShipping', 'totalExpenses', 'profit'));
+        return view('dashboard.reports.show', compact('bills', 'totalbills','totalSales', 'totalCost', 'totalShipping', 'totalExpenses', 'profit'));
     }
 
     function generate_pdf(Request $request)
