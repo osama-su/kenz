@@ -1,5 +1,5 @@
 <td>
-    @can('update_delivery')
+    @canany(['update_delivery','update_own_bill'])
         @if($bill->deleted_at==null)
             @if(
                 auth()->user()->role_id == '1' || $bill->created_by==auth()->user()->id)
@@ -9,7 +9,7 @@
             </a>
             @endif
         @endif
-    @endcan
+    @endcanany
     @can('delete_delivery')
         @if($bill->deleted_at==null)
                 @if(
