@@ -113,8 +113,10 @@ class ReportController extends Controller
         $totalCost = 0;
         $totalShipping = 0;
         $totalExpenses = $expenses->whereBetween(
-            'created_at', $bills->count() == 0 ? [null, null] :
-            [$bills->last()->created_at, $bills->first()->created_at])
+            'created_at',
+            ($request->date_from && $request->date_to) ? [$request->date_from, $request->date_to] :
+                ($bills->count() == 0 ? [null, null] :
+                [$bills->last()->created_at, $bills->first()->created_at]))
             ->get()->sum('amount');
 
 
