@@ -1,9 +1,9 @@
-              @can('update_bill')
+@canany(['update_delivery','update_own_bill'])
                                         <a href="{{route('dashboard.bills.edit', ['bill' => $bill->id])}}"
                                            class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                             <i class="la la-edit"></i>
                                         </a>
-                                    @endcan
+@endcanany
                                     @can('delete_bill')
                                         <a data-url="{{ route('dashboard.bills.destroy',['bill' => $bill->id]) }}"
                                            data-item-id="{{ $bill->id }}"
