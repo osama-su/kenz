@@ -11,6 +11,7 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class BillsController extends Controller
             $bills->where('created_by',auth()->user()->id);
         }
         if ($request->date_from || $request->date_to) {
-            $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $bills = $bills->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
         }
         if ($request->supplier_id) {
             $bills = $bills->where('supplier_id', $request->supplier_id);
@@ -403,7 +404,7 @@ class BillsController extends Controller
      */
     public function edit(Bill $bill): View
     {
-        $this->authorize('update_bill');
+//        $this->authorize('update_bill');
 
         $products = Product::all();
 

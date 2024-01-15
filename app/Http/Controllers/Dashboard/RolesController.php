@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +36,7 @@ class RolesController extends Controller
         $roles = Role::all();
 
         if ($request->date_from || $request->date_to) {
-            $roles = $roles->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $roles = $roles->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
         }
 
         return view('dashboard.roles.index', compact('roles'));

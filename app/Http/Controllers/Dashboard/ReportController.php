@@ -9,6 +9,7 @@ use App\Models\Expenses;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -48,8 +49,8 @@ class ReportController extends Controller
         $expenses = expenses::orderBy('created_at', 'desc');
 
         if ($request->date_from || $request->date_to) {
-            $bills = $bills->whereBetween('created_at', [$request->date_from, $request->date_to]);
-            $expenses = $expenses->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $bills = $bills->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
+            $expenses = $expenses->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
         }
 
         if ($request->gov) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateSuppliersRequest;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class SuppliersController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->get();
 
         if ($request->date_from || $request->date_to) {
-            $suppliers = $suppliers->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $suppliers = $suppliers->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
         }
 
         return view('dashboard.suppliers.index', compact('suppliers'));

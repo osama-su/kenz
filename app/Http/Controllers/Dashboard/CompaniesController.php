@@ -7,6 +7,7 @@ use App\Http\Requests\CompaniesRequest;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Company;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class CompaniesController extends Controller
         $companies = Company::orderBy('created_at', 'desc')->get();
 
         if ($request->date_from || $request->date_to) {
-            $companies = $companies->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            $companies = $companies->whereBetween('created_at', [$request->date_from, (new Carbon($request->date_to))->addDay()]);
         }
 
         return view('dashboard.companies.index', compact('companies'));
