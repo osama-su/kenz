@@ -126,7 +126,7 @@ class ReturnAndDeliveryController extends Controller
                 return $bill->billDetails->map(function ($billDetail) {
                     $name = $billDetail->product->name ?? '-';
                     if ($billDetail->delivery_status != null) {
-                        $name = $billDetail->product->name . '-' . ($billDetail->delivery_status === 'yes' ? 'تم التسليم' : 'لم يتم التسليم');
+                        $name = $billDetail->product->name ?? '-' . '-' . ($billDetail->delivery_status === 'yes' ? 'تم التسليم' : 'لم يتم التسليم');
                     }
                     return $name ?? '-';
                 })->implode("-");
@@ -237,6 +237,7 @@ class ReturnAndDeliveryController extends Controller
                 }
 
             })->make(true);
+
     }
 
 
