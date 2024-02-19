@@ -169,8 +169,38 @@
                 <!--begin::Form-->
                 <div class="card-header">
                     <h3 class="card-title">الفواتير</h3>
+
+                    <form action="{{route('dashboard.users.edit',['user'=>$user->id])}}" method="get">
+                        <div class="row mt-3">
+                            <div class="col-lg-6 mt-3">
+                                <label style="float: right;">التاريخ من:</label>
+                                <input type="date"
+                                       name="date_from"
+                                       value="{{Request()->date_from}}"
+                                       class="form-control created_at"
+                                       placeholder="من فضلك ادخل التاريخ من">
+                            </div>
+                            <div class="col-lg-6 mt-3">
+                                <label style="float: right;">التاريخ الي:</label>
+                                <input type="date"
+                                       name="date_to"
+                                       value="{{Request()->date_to}}"
+                                       class="form-control updated_at"
+                                       placeholder="من فضلك ادخل التاريخ الي">
+                            </div>
+                            <div class="col-lg-12 mt-3">
+                                {!! csrf_field() !!}
+                                <button class="col-md-12 btn btn-primary" type="submit">بحث</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <h3 class="card-title">مجموع العمولات :
-                        {{$user->bills->sum(function ($bill) {
+                        {{$user->bills
+->when(request()->date_from || request()->date_to, function ($q) {
+    return $q->whereBetween('created_at', [request()->date_from, request()->date_to]);
+})
+->sum(function ($bill) {
         return $bill->billDetails->sum(function ($billDetail) {
             return optional($billDetail->product)->commission * $billDetail->qty;
         });
@@ -194,7 +224,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($user->bills as $bill)
+                        @foreach($user->bills->when(request()->date_from || request()->date_to, function ($q) {
+    return $q->whereBetween('created_at', [request()->date_from, request()->date_to]);
+}) as $bill)
                             <tr id="row-{{ $bill->id }}">
                                 <td>{{$bill->id??'-'}}</td>
                                 <td>{{$bill->user->name??'-'}}</td>
