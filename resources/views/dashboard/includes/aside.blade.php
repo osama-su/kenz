@@ -121,6 +121,18 @@
                 </li>
                 @endcan
                 @endhasRoleOnModel
+                @hasRoleOnModel('finance')
+                @can('read_finance')
+                    <li class="menu-item {{ request()->is('finance*') ? 'menu-item-open menu-item-here' : '' }}">
+                        <a @can('read_finance')
+                               href="{{route('dashboard.finance.index')}}"
+                           @endcan
+                           class="menu-link">
+                            <span class="menu-text">الحسابات</span>
+                        </a>
+                    </li>
+                @endcan
+                @endhasRoleOnModel
                 @hasRoleOnModel('delivery')
                 @can('read_delivery')
                 <li class="menu-item {{ request()->is('deliveries*') ? 'menu-item-open menu-item-here' : '' }}">

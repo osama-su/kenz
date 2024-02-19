@@ -20,7 +20,161 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
+            <div class="row">
+                <div class="col-xl-3">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">الفواتير</a>
+                                    <span class="text-muted font-weight-bold mt-2">عدد الفواتير</span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$bills->count()}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-3">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي المبيعات</a>
+                                    <span class="text-muted font-weight-bold mt-2">
 
+                                    </span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalbills}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-4">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي الأيرادات</a>
+                                    <span class="text-muted font-weight-bold mt-2">
+
+                                    </span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalSales}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-3">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي التكلفة</a>
+                                    <span class="text-muted font-weight-bold mt-2">
+
+                                    </span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalCost}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي الشحن</a>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalShipping}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-4">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">إجمالي المصروفات</a>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$totalExpenses}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+                <div class="col-xl-4">
+                    <!--begin::Stats Widget 7-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Body-->
+                        <div class="card-body d-flex flex-column p-0">
+                            <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                                <div class="d-flex flex-column mr-2">
+                                    <a href="{{route('dashboard.users.index')}}"
+                                       class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">الأرباح * تم التسليم فقط</a>
+                                    <span class="text-muted font-weight-bold mt-2">الأرباح : مجموع الأيرادات ناقص التكلفة ناقص الشحن ناقص المصروفات</span>
+                                </div>
+                                <span class="symbol symbol-light-success symbol-45">
+														<span
+                                                            class="symbol-label font-weight-bolder font-size-h6">{{$profit}}</span>
+													</span>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 7-->
+                </div>
+            </div>
             <div class="mt-3">
                 <form action="{{route('dashboard.reports.generate_pdf')}}" method="post">
 

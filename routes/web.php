@@ -97,6 +97,12 @@ Route::namespace('Dashboard')->group(function () {
             Route::get('/show', 'ReportController@show')->name('show');
               Route::post('generate_pdf', 'ReportController@generate_pdf')->name('generate_pdf');
         });
+        //Finance Route
+        Route::group(['prefix' => 'finance', 'as' => 'finance.'], function () {
+            Route::get('/', 'FinanceController@index')->name('index');
+            Route::get('/show', 'FinanceController@show')->name('show');
+            Route::post('generate_pdf', 'FinanceController@generate_pdf')->name('generate_pdf');
+        });
 
         //Return and delivery Route
         Route::resource('deliveries', 'ReturnAndDeliveryController')->only('index', 'edit', 'update', 'destroy');
