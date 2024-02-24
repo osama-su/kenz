@@ -53,12 +53,12 @@
                 </li>
                 @endcan
                 @endhasRoleOnModel
-                @hasRoleOnModel('product')
+                @hasRoleOnModel('expense')
                 @can('read_product')
                     <li class="menu-item {{ request()->is('expenses*') ? 'menu-item-open menu-item-here' : '' }}">
-                        <a @can('read_product')
+                        <a @can('read_expense')
                                href="{{route('dashboard.expenses.index')}}"
-                           @elsecan('create_product')
+                           @elsecan('create_expense')
                                href="{{route('dashboard.expenses.create')}}"
                            @endcan
                            class="menu-link">
