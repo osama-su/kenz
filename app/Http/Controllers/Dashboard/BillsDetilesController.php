@@ -65,6 +65,13 @@ class BillsDetilesController extends Controller
         $bill->update(['price' => $price, 'price_after' => $price_after]);
 
 
+
+        if($bill->company){
+            $companyWallet = $bill->company->wallet();
+            $companyWallet->create(['bill_id' => $bill->id, 'amount' => ($bill->price - $bill->discount_percentage), 'type' => 'return']);
+        }
+
+
         return redirect()->route('dashboard.bills.edit', ['bill' => $bill->id])
             ->with(['status' => 'success', 'message' => 'تم الحفظ بنجاح']);
     }
