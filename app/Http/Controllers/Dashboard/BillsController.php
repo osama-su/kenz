@@ -209,10 +209,8 @@ class BillsController extends Controller
             })
             ->addColumn('profit', function (Bill $bill) {
                 // bill's products cost
-                $cost = $bill->billDetails->map(function ($billDetails) {
-                    return $billDetails->product ? $billDetails->product->wholesale_price * $billDetails->qty : 0;
-                })->sum();
-                return $bill->price_after - $cost - $bill->delivery_fee;
+
+                return $bill->profit;
             })
             ->addColumn('print_status', function (Bill $bill) {
                 if ($bill->print == 'yes') {
@@ -601,6 +599,14 @@ class BillsController extends Controller
 //            }
 //        }
 
+        $cost = $bill->billDetails->map(function ($billDetails) {
+            if ($billDetails->product) {
+                return $billDetails->product->wholesale_price * $billDetails->qty;
+            }
+            return 0;
+        })->sum();
+        $bill->profit = $bill->price_after - $cost - $bill->delivery_fee;
+        $bill->save();
 
         $pdf = \PDF::loadView('dashboard.bills.pdf', $bills->first());
         return $pdf->stream('bill_' . $bills->first()->id . '.pdf');

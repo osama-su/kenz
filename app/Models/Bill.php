@@ -32,7 +32,8 @@ class Bill extends Model
         'deleted_type',
         'deleted_at',
         'created_by',
-        'supplier_id'
+        'supplier_id',
+        'profit'
 
     ];
 
@@ -43,7 +44,7 @@ class Bill extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+
       public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
@@ -61,7 +62,7 @@ class Bill extends Model
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
-    
+
      public function wallet()
     {
         return $this->hasMany(CompanyWallet::class, 'bill_id');
