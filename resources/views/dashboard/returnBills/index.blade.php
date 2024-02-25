@@ -213,6 +213,7 @@
                         <th>كيو ار</th>
                         <th>اسم العميل</th>
                         <th>المحافظة</th>
+                        <th>اسم المندوب</th>
                         <th>اسم المورد</th>
                         <th>اسم المنتج</th>
                         <th>الكمية</th>
@@ -262,6 +263,7 @@
                 data: function (d) {
                     d.name = $('#name').val();
                     d.gov = $('#gov').val();
+                    d.company = $('#company').val();
                     d.supplier_id = $('#supplier_id').val();
                     d.product_id = $('#product_id').val();
                     d.delivery_status = $('#delivery_status').val();
@@ -279,6 +281,7 @@
                 {data: 'qr', name: 'qr', defaultContent: '-'},
                 {data: 'name', name: 'name', defaultContent: '-'},
                 {data: 'gov', name: 'gov', defaultContent: '-'},
+                {data: 'company', name: 'company', defaultContent: '-'},
                 {data: 'supplier', name: 'supplier', defaultContent: '-'},
                 {data: 'delivery_status', name: 'delivery_status', defaultContent: '-'},
                 {data: 'qty', name: 'qty', defaultContent: '-'},

@@ -97,6 +97,9 @@ class ReturnAndDeliveryController extends Controller
             ->editColumn('gov', function (Bill $bill) {
                 return $bill->user->gov ?? '-';
             })
+            ->addColumn('company', function (Bill $bill) {
+                return $bill->company->name ?? '-';
+            })
             ->editColumn('supplier', function (Bill $bill) {
                 return $bill->supplier->name ?? '-';
             })
