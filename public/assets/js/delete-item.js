@@ -7,15 +7,16 @@ $.ajaxSetup({
 });
 
 // Delete item.
-var delete_route;
-var item_id;
+let delete_route;
+let item_id;
 
-$('.delete-button').on('click', function () {
+$(document).on('click', '.delete-button', function () {
+    console.log($(this).data("url"))
     delete_route = $(this).data('url');
     item_id = $(this).data('item-id');
 });
 
-$(document).on('click', '#delete-button', function () {
+$(document).on('click', '#delete_button', function () {
     $.post(delete_route + '?deleted_type=' + $('.deleted_type').val(), {_method: 'delete'},).done(function () {
         $('#delete_modal').modal('toggle');
         $('#row-' + item_id).fadeOut();

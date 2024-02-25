@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                <button type="button" class="btn btn-danger" id="delete-button">نعم</button>
+                <button type="button" class="btn btn-danger" id="delete_button">نعم</button>
             </div>
         </div>
     </div>

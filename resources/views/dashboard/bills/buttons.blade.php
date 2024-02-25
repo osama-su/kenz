@@ -5,11 +5,11 @@
                                         </a>
 @endcanany
                                     @can('delete_bill')
-                                        <a data-url="{{ route('dashboard.bills.destroy',['bill' => $bill->id]) }}"
+                                        <button type="button" data-url="{{ route('dashboard.bills.destroy',['bill' => $bill->id]) }}"
                                            data-item-id="{{ $bill->id }}"
                                            class="btn btn-sm btn-clean btn-icon btn-icon-md delete-button"
                                            data-toggle="modal"
                                            data-target="#delete_modal">
                                             <i class="la la-trash"></i>
-                                        </a>
+                                        </button>
                                     @endcan
