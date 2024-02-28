@@ -212,6 +212,16 @@ class BillsController extends Controller
             })
             ->addColumn('profit', function (Bill $bill) {
                 // bill's products cost
+                if(!$bill->profit){
+                    $cost = $bill->billDetails->map(function ($billDetails) {
+                        if ($billDetails->product) {
+                            return $billDetails->product->wholesale_price * $billDetails->qty;
+                        }
+                        return 0;
+                    })->sum();
+                    $bill->profit = $bill->price_after - $cost - $bill->delivery_fee;
+                    $bill->save();
+                }
 
                 return $bill->profit;
             })
