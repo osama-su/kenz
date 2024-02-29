@@ -163,6 +163,8 @@ class BillsController extends Controller
             })
             ->editColumn('gov', function (Bill $bill) {
                 return $bill->user->gov ?? '-';
+            })->addColumn('sales', function (Bill $bill) {
+                return $bill->createdBy->name ?? '-';
             })->addColumn('company', function (Bill $bill) {
                 return $bill->company->name ?? '-';
             })

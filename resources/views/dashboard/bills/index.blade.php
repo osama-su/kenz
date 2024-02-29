@@ -171,6 +171,7 @@
                             <th>المحافظة</th>
                             <th>عنوان لعميل</th>
                             <th>رقم هاتف العميل</th>
+                            <th>اسم المبيعات</th>
                                 <th>اسم المندوب</th>
                             <th>اسم المورد</th>
                             <th>اسم المنتج</th>
@@ -242,6 +243,7 @@
             {data: 'gov', name: 'gov', defaultContent: '-'},
             {data: 'address', name: 'address', defaultContent: '-'},
             {data: 'mobile', name: 'mobile', defaultContent: '-'},
+            {data: 'sales', name: 'sales', defaultContent: '-'},
             {data: 'company', name: 'company', defaultContent: '-'},
             {data: 'supplier', name: 'supplier', defaultContent: '-'},
             {data: 'product_name', name: 'product_name', defaultContent: '-'},
@@ -271,6 +273,7 @@
             {data: 'gov', name: 'gov', defaultContent: '-'},
             {data: 'address', name: 'address', defaultContent: '-'},
             {data: 'mobile', name: 'mobile', defaultContent: '-'},
+            {data: 'sales', name: 'sales', defaultContent: '-'},
             {data: 'company', name: 'company', defaultContent: '-'},
             {data: 'supplier', name: 'supplier', defaultContent: '-'},
             {data: 'product_name', name: 'product_name', defaultContent: '-'},
