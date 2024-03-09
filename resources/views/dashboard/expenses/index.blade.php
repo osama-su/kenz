@@ -17,7 +17,7 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
-                @can('create_product')
+                @can('create_expense')
                     <a href="{{route('dashboard.expenses.create')}}" class="btn btn-primary font-weight-bolder m-4">
 											<span class="svg-icon svg-icon-md">
 												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
@@ -162,13 +162,13 @@
                             <td>{{$expense->created_by??'-'}}</td>
                             <td>{{ $expense->created_at ?? '-' }}</td>
                             <td>
-                                @can('update_product')
+                                @can('update_expense')
                                     <a href="{{route('dashboard.expenses.edit', ['expense' => $expense->id])}}"
                                        class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                         <i class="la la-edit"></i>
                                     </a>
                                 @endcan
-                                @can('delete_product')
+                                @can('delete_expense')
                                     <a data-url="{{ route('dashboard.expenses.destroy',['expense' => $expense->id]) }}"
                                        data-item-id="{{ $expense->id }}"
                                        class="btn btn-sm btn-clean btn-icon btn-icon-md delete-button"

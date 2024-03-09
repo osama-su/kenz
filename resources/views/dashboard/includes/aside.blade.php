@@ -54,7 +54,7 @@
                 @endcan
                 @endhasRoleOnModel
                 @hasRoleOnModel('expense')
-                @can('read_product')
+                @can('read_expense')
                     <li class="menu-item {{ request()->is('expenses*') ? 'menu-item-open menu-item-here' : '' }}">
                         <a @can('read_expense')
                                href="{{route('dashboard.expenses.index')}}"
