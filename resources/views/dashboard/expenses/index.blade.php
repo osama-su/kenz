@@ -157,7 +157,7 @@
                     @foreach($expenses as $expense)
                         <tr id="row-{{ $expense->id }}">
                             <td>{{$expense->id??'-'}}</td>
-                            <td>{{$expense->title??'-'}}</td>
+                            <td>{{$expense->expenseType->name??'-'}}</td>
                             <td>{{$expense->amount??'-'}}</td>
                             <td>{{$expense->created_by??'-'}}</td>
                             <td>{{ $expense->created_at ?? '-' }}</td>
